@@ -15,12 +15,18 @@ def clickedStart():
     start = True
 
 def movePad(event):
-    print(event.y)
-    y=event.y + pady1
-    if(event.y <= screenH - pady1):
-        canvas.coords(rect, padx0,pady0 + event.y,padx1,pady1 + event.y)
-    else:
-        canvas.coords(rect, padx0,pady0 + screenH - pady1,padx1,pady1 + screenH - pady1)
+    
+    y=event.y - pady1/2
+
+    print(y)
+
+    if(y < screenH - pady1 and y > 0):
+        canvas.coords(rect, padx0,pady0 + y,padx1,pady1 + y)
+    elif (y > screenH - pady1):
+        canvas.coords(rect, padx0,pady0 + (screenH - pady1),padx1,pady1 + (screenH - pady1))
+    elif(y < 0):
+        canvas.coords(rect, padx0,pady0,padx1,pady1)
+
 
 def mouseOverEvent(event):
     print(event.y)
