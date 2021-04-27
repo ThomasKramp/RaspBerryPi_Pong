@@ -6,6 +6,22 @@ screenH = 500
 player1Padx0, player1Pady0 ,player1Padx1 , player1Pady1 = 20, 0 ,30 ,60
 player2Padx0, player2Pady0 ,player2Padx1 , player2Pady1 = 470, 0 ,480 ,60
 
+class padCoords():
+    x0=0
+    x1=0
+    y0=0
+    y1=0
+    objId=0
+    curx0=0
+    cury0=0
+    curx1=0
+    cury1=0
+
+player1 = padCoords();
+player1.x0, player1.x1, player1.y0, player1.y1 = 20, 30, 0, 60
+player2 = padCoords();
+player2.x0, player2.x1, player2.y0, player2.y1 = 470, 480, 0, 60
+
 PlayerDefine = "R"
 
 def clickedStart():
@@ -21,28 +37,34 @@ def clickedStart():
 def movePad(event):
     global PlayerDefine
     if(PlayerDefine == "R"):
-        y=event.y - player1Pady1/2
+        y=event.y - player1.y1/2
 
-        print("Links")
+        #print("Rechts")
 
-        if(y < screenH - player1Pady1 and y > 0):
-            canvas.coords(player1, player1Padx0,player1Pady0 + y,player1Padx1,player1Pady1 + y)
-        elif (y > screenH - player1Pady1):
-            canvas.coords(player1, player1Padx0,player1Pady0 + (screenH - player1Pady1),player1Padx1,player1Pady1 + (screenH - player1Pady1))
+        if(y < screenH - player1.y1 and y > 0):
+            canvas.coords(player1.objId, player1.x0,player1.y0 + y,player1.x1,player1.y1 + y)
+        elif (y > screenH - player1.y1):
+            canvas.coords(player1.objId, player1.x0,player1.y0 + (screenH - player1.y1),player1.x1,player1.y1 + (screenH - player1.y1))
         elif(y < 0):
-            canvas.coords(player1, player1Padx0,player1Pady0,player1Padx1,player1Pady1)
+            canvas.coords(player1.objId, player1.x0,player1.y0,player1.x1,player1.y1)
 
     else:
-        y=event.y - player1Pady1/2
+        y=event.y - player1.y1/2
 
-        print("Links")
+        #print("Links")
 
-        if(y < screenH - player2Pady1 and y > 0):
-            canvas.coords(player2, player2Padx0,player2Pady0 + y,player2Padx1,player2Pady1 + y)
-        elif (y > screenH - player2Pady1):
-            canvas.coords(player2, player2Padx0,player2Pady0 + (screenH - player2Pady1),player2Padx1,player2Pady1 + (screenH - player2Pady1))
+        if(y < screenH - player2.y1 and y > 0):
+            canvas.coords(player2.objId, player2.x0,player2.y0 + y,player2.x1,player2.y1 + y)
+        elif (y > screenH - player2.y1):
+            canvas.coords(player2.objId, player2.x0,player2.y0 + (screenH - player2.y1),player2.x1,player2.y1 + (screenH - player2.y1))
         elif(y < 0):
-            canvas.coords(player2, player2Padx0,player2Pady0,player2Padx1,player2Pady1)
+            canvas.coords(player2.objId, player2.x0,player2.y0,player2.x1,player2.y1)
+
+    print(player1.cury0)
+    
+    [player1.curx0, player1.cury0, player1.curx1, player1.cury1] = canvas.coords(player1.objId)
+    [player2.curx0, player2.cury0, player2.curx1, player2.cury1] = canvas.coords(player2.objId)
+
 
 
 def mouseOverEvent(event):
@@ -54,8 +76,8 @@ root.resizable(False, False)    #instellen dat width en height niet kan verander
 root.config(bg='goldenrod')
 canvas = tk.Canvas(root, width=screenW, height=screenH,bg="sky blue")
 #Een vierkant maken
-player1 = canvas.create_rectangle(player1Padx0,player1Pady0,player1Padx1,player1Pady1,fill="grey18")
-player2 = canvas.create_rectangle(player2Padx0,player2Pady0,player2Padx1,player1Pady1,fill="grey18")
+player1.objId = canvas.create_rectangle(player1.x0,player1.y0,player1.x1,player1.y1,fill="grey18")
+player2.objId = canvas.create_rectangle(player2.x0,player2.y0,player2.x1,player1.y1,fill="grey18")
 canvas.pack()
 
 startButton = tk.Button(root, text="Switch player",command=clickedStart)    #zal Hello printen in de button en bij drukken knop -> naar event methode
