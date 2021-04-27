@@ -8,12 +8,12 @@ root = tk.Tk()
 
 # maak canvas & padd
 canvas = tk.Canvas( root, width = scrWidth, height = scrHeight)
-padd1 = canvas.create_rectangle(100, scrHeight/2 + 35, 110, scrHeight/2 - 35, fill='black')
+padd = canvas.create_rectangle(100, scrHeight/2 + 35, 110, scrHeight/2 - 35, fill='black')
 canvas.pack()
 
 # beweeg padd
 ySpeed = 3
-def movePadd(padd):
+def movePadd():
     global ySpeed, scrHeight
     canvas.move(padd, 0, ySpeed)
     (leftPos, topPos, rightPos, bottomPos) = canvas.coords(padd)
@@ -22,7 +22,7 @@ def movePadd(padd):
     canvas.after(50, movePadd)
 
 # maak knop
-button = tk.Button ( root, text = "Start", command = movePadd(padd1) )
+button = tk.Button ( root, text = "Start", command = movePadd() )
 button.pack()
 
 # voer code uit
