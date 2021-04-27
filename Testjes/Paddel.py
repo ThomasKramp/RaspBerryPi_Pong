@@ -1,5 +1,4 @@
 import tkinter as tk
-from time import sleep
 
 screenW = 500
 screenH = 500
