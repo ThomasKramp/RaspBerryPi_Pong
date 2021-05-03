@@ -17,7 +17,7 @@ canvas.pack()
 
 root.bind('<Key>', func=Pad1.movePaddle)
 # root.bind('<Key>', func=Pad2.movePaddle)
-button = tk.Button ( root, text = "Start", command = lambda:Ball.moveBall(Pad1.id, Pad2.id))
+button = tk.Button ( root, text = "Start", command = lambda:Ball.moveBall((Pad1.id, Pad2.id)))
 button.pack()
 
 root.mainloop()
