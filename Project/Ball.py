@@ -16,14 +16,16 @@ class Ball(object):
         # Snelheid van paddle instellen
         self.xSpeed = self.ySpeed = 7
 
-    def moveBall(self):
+    def moveBall(self, leftPad, rightPad):
         # Huidige positie ophalen
         (leftPos, topPos, rightPos, bottomPos) = self.canvas.coords(self.ball)
+
+        (leftPos1, topPos1, rightPos1, bottomPos1) = self.canvas.coords(leftPad)
 
         # Beweeg de bal
         self.canvas.move(self.ball, self.xSpeed, self.ySpeed)
 
-        print(leftPad)
+        print((leftPos1, topPos1, rightPos1, bottomPos1))
         # Kijk voor botsingen
         if leftPos + self.xSpeed <= 0 or rightPos + self.xSpeed >= self.scrWidth:
             self.xSpeed = -self.xSpeed
@@ -31,4 +33,4 @@ class Ball(object):
             self.ySpeed = -self.ySpeed
         
         # Start de functie opnieuw op
-        self.canvas.after(50, self.moveBall)
+        self.canvas.after(50, self.moveBall, *(leftPad, rightPad))

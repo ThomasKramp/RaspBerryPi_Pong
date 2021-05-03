@@ -2,6 +2,7 @@ class Paddle(object):
 
     leftPos = rightPos = 0
 
+    id
 
     def __init__(self, canvas, scrDimen, leftPaddle, color):
         # Canvas maken om mee te werken
@@ -27,6 +28,8 @@ class Paddle(object):
         self.speed = 3
         
         (self.leftPos, topPos, self.rightPos, bottomPos) = self.canvas.coords(self.paddle)
+        
+        self.id = self.paddle
 
 
     def movePaddle(self, event):
