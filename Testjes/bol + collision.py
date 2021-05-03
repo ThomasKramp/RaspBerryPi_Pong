@@ -7,16 +7,16 @@ class Bol(object):
     def __init__(self, canvas, coords, fill):   
         self.canvas = canvas
         self.bol = self.canvas.create_oval(coords, fill=fill)
-        self.moveY = 3
-        self.moveX = 5
+        self.moveY = 4
+        self.moveX = 7
         self.x0 = coords[0]
         self.y0 = coords[1]
         self.x1 = coords[2]
         self.y1 = coords[3]
 
 
-    def CheckCollision(self):
-        global screenW, screenH, players
+    def CheckCollision(self, players):
+        global screenW, screenH
         (left,top,right,bottom) = self.canvas.coords(self.bol)
 
         if(top + self.moveY <= 0 or bottom + self.moveY >= screenH):
@@ -94,8 +94,10 @@ class Bol(object):
         return (a and b and c and d)
 
 def start():
-    bol.CheckCollision()
-    canvas.after(10, start)
+    global players
+    bol.CheckCollision(players)
+    bol1.CheckCollision(players)
+    canvas.after(20, start)
 
 root = tk.Tk()
 root.geometry('500x530')    #instellen van window size
@@ -107,11 +109,13 @@ canvas = tk.Canvas(root, width=screenW, height=screenH,bg="sky blue")
 players = (canvas.create_rectangle(50,60,70,90,fill="red"),
 canvas.create_rectangle(80,200,120,150,fill="green"),
 canvas.create_rectangle(300,400,350,420,fill="blue"),
-canvas.create_rectangle(380,450,430,520,fill="blue"))
+canvas.create_rectangle(380,450,430,520,fill="blue"),
+canvas.create_rectangle(150,200,200,240,fill="yellow"))
 #players = (canvas.create_rectangle(50,60,70,90,fill="red"))
 
 #een bol maken
 bol = Bol(canvas, (10,10,30,30), "black")
+bol1 = Bol(canvas, (80,80,100,100), "blue")
 canvas.pack()
 
 startButton = tk.Button(root, text="Switch player", command=start)    #zal Hello printen in de button en bij drukken knop -> naar event methode
