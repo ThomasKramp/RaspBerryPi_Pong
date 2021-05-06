@@ -19,12 +19,21 @@
     - /playerX/client/fast  Zal een boolean zijn -> True is sneller bewegen en False is default speed
     - /playerX/client/
 
+    Punten van client
+    - /playerx/points
+
     Coördinaten bal
     Wordt gans het spel verstuurd naar client
     - /bal/x0
     - /bal/y0
     - /bal/x1
     - /bal/y1
+
+    Config variabelen
+    - Aantal botsingen
+        - /tics
+    - Aantal rondes
+        - /rounds
 
 
 
