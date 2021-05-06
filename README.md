@@ -12,12 +12,20 @@
     - /playerX/server/x1
     - /playerX/server/y1
 
-    Coördinaten paddles van client naar server
+    Beweging van speler van client naar server
     Wordt gans het spel naar server gestuurd
     - /playerX/client/up  Zal een boolean zijn -> True is naar boven gaan en False is niet bewegen
     - /playerX/client/down  Zal een boolean zijn -> True is naar onder gaan en False is niet bewegen
     - /playerX/client/fast  Zal een boolean zijn -> True is sneller bewegen en False is default speed
-    - /playerX/client/
+
+    Startsignaal van server naar client
+    - /server/start
+
+    Startsignaal van client naar server
+    - /client/start
+
+    Startsignaal van nieuw spel binnen +- 4 seconden van server naar client
+    - /server/startnext
 
     Punten van client
     - /playerx/points
