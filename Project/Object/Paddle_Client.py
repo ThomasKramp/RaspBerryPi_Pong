@@ -1,3 +1,5 @@
+import paho.mqtt.client as client
+
 class Paddle(object):
 
     leftPos = rightPos = 0
@@ -9,7 +11,5 @@ class Paddle(object):
         # De paddle zelf aanmaken
         self.paddle = self.canvas.create_rectangle(coords, fill=color)
 
-        self.speed  = 3
-
-    def moveUp(self):
-        self.canvas.move(self.paddle, 0, self.speed)
+    def move(self,coords):
+        self.canvas.coords(self.paddle, coords[0],coords[1],coords[2],coords[3])

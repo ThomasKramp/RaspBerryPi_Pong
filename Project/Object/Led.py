@@ -9,24 +9,29 @@ class Led(object):
         self.colorOn = colorOn
         self.colorOff = colorOff
         self.toggle = False
+        self.canvas.pack()
 
     def Toggle(self):
         if(self.toggle == False):
-            print("On")
+            if __name__  == "__main__":
+                print("On")
             self.On()
             self.toggle = True
         else:
-            print("Off")
+            if __name__  == "__main__":
+                print("Off")
             self.Off()
             self.toggle = False
 
     def On(self):
         self.canvas.itemconfig(self.led, fill=self.colorOn)
-        print("On")
+        if __name__  == "__main__":
+            print("On")
 
     def Off(self):
         self.canvas.itemconfig(self.led, fill=self.colorOff)
-        print("Off")
+        if __name__  == "__main__":
+            print("Off")
 
 if __name__  == "__main__":
 
