@@ -2,7 +2,7 @@ class Paddle(object):
 
     isSet = False
     coords = (0, 0, 0, 0)
-    speed = 0
+    speed = (0, 0)
 
     def __init__(self, scrDimen, leftPaddle):
         # Dimensies van het scherm bijhouden

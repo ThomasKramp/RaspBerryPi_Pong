@@ -1,5 +1,8 @@
 class Ball(object):
 
+    coords = (0, 0, 0, 0)
+    speed = (0, 0)
+
     def __init__(self, scrDimen):
         # Dimensies van het scherm bijhouden
         self.scrDimen = (scrHeight, scrWidth) = scrDimen
@@ -9,7 +12,7 @@ class Ball(object):
         self.coords = (scrWidth / 2 - 10, scrHeight / 2 - 10, scrWidth / 2 + 10, scrHeight / 2 + 10)
 
         # Snelheid van de bal instellen
-        self.speed = (speedX, speedY) = (7, 7)
+        self.speed = (speedX, speedY) = (23, 23)
 
     def moveBall(self, paddles):
         # Huidige positie ophalen
@@ -18,24 +21,24 @@ class Ball(object):
         (speedX, speedY) = self.speed
 
         # Kijk voor botsingen met scherm
-        if leftPos + self.xSpeed <= 0 or rightPos + speedX >= scrWidth:
+        if leftPos + speedX <= 0 or rightPos + speedX >= scrWidth:
             speedX = -speedX
-        if topPos + self.ySpeed <= 0 or bottomPos + speedY >= scrHeight:
+        if topPos + speedY <= 0 or bottomPos + speedY >= scrHeight:
             speedY = -speedY
         
         # Aanraken van een speler
         for paddle in paddles:
             if(self.isTouchingLeft(paddle)):
-                self.xSpeed = -self.xSpeed
+                speedX = -speedX
 
             if(self.isTouchingTop(paddle)):
-                self.ySpeed = -self.ySpeed
+                speedY = -speedY
 
             if(self.isTouchingRight(paddle)):
-                self.xSpeed = -self.xSpeed
+                speedX = -speedX
         
             if(self.isTouchingBottom(paddle)):
-                self.ySpeed = -self.ySpeed
+                speedY = -speedY
 
         # Beweeg de bal
         leftPos = leftPos + speedX

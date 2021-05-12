@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+from time import sleep
 import json
 
 from ServerPaddle import Paddle
@@ -8,7 +9,8 @@ broker_address="127.0.0.1"
 scrDimen = (scrHeight, scrWidth) = (600, 500)
 paddle1 = Paddle(scrDimen, True)
 paddle2 = Paddle(scrDimen, False)
-coordsBall = Ball(scrDimen)
+ball = Ball(scrDimen)
+stop = False
 
 def subscribes():
     global client
@@ -33,37 +35,37 @@ def on_message(clients, userdata, message):
         print("Player 1 up")
         paddle1.movePaddle("up")
         print(paddle1.coords)
-        client.publish("/player1/server/up", json.dumps(paddle1.coords))
+        client.publish("/player1/server/coords", json.dumps(paddle1.coords))
     
     if "/player1/client/down" in message.topic:
         print("Player 1 down")
         paddle1.movePaddle("down")
         print(paddle1.coords)
-        client.publish("/player1/server/down", json.dumps(paddle1.coords))
+        client.publish("/player1/server/coords", json.dumps(paddle1.coords))
     
     if "/player1/client/fast" in message.topic:
         print("Player 1 fast")
         paddle1.changeSpeed()
         print(paddle1.speed)
-        client.publish("/player1/server/fast", paddle1.speed)
+        client.publish("/player1/server/speed", paddle1.speed)
     
     if "/player2/client/up" in message.topic:
         print("Player 2 up")
         paddle2.movePaddle("up")
         print(paddle2.coords)
-        client.publish("/player2/server/up", json.dumps(paddle2.coords))
+        client.publish("/player2/server/coords", json.dumps(paddle2.coords))
     
     if "/player2/client/down" in message.topic:
         print("Player 2 down")
         paddle2.movePaddle("down")
         print(paddle2.coords)
-        client.publish("/player2/server/down", json.dumps(paddle2.coords))
+        client.publish("/player2/server/coords", json.dumps(paddle2.coords))
     
     if "/player2/client/fast" in message.topic:
         print("Player 2 fast")
         paddle2.changeSpeed()
         print(paddle2.speed)
-        client.publish("/player2/server/fast", paddle2.speed)
+        client.publish("/player2/server/speed", paddle2.speed)
     
     if "/client/start" in message.topic:
         print("start")
@@ -87,8 +89,14 @@ client.connect(host=broker_address,port=1883) #connect to broker
 client.loop_start() #start the loop
 subscribes()
 
-try:
-	while True:
-		pass
-except KeyboardInterrupt:
-	pass
+while stop == False:
+    ball.moveBall((paddle1, paddle2))
+    print(ball.coords)
+    client.publish("/ball/coords", json.dumps(ball.coords))
+    sleep(1)
+
+#try:
+#	while True:
+#        pass
+#except KeyboardInterrupt:
+#	pass
