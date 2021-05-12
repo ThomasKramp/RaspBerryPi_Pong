@@ -18,7 +18,6 @@ class Paddle(object):
         # Snelheid van paddle instellen
         self.speed = 3
 
-
     def movePaddle(self, movement):
         # Huidige positie ophalen
         (leftPos, topPos, rightPos, bottomPos) = self.coords

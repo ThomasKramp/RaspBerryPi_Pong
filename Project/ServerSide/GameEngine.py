@@ -2,15 +2,14 @@ import paho.mqtt.client as mqtt
 import paho.mqtt.subscribe as subscribe
 import json
 
-from Paddle import Paddle
+from ServerPaddle import Paddle
+from ServerBall import Ball
 
 broker_address="192.168.255.206"
 scrDimen = (scrHeight, scrWidth) = (600, 500)
 paddle1 = Paddle(scrDimen, True)
 paddle2 = Paddle(scrDimen, False)
-#coordsPlayer1 = (10, scrHeight / 2 - 50, 20, scrHeight / 2 + 50) #De coördinaten van de speler1
-#coordsPlayer2 = (scrWidth - 20, scrHeight / 2 - 50, scrWidth - 10, scrHeight / 2 + 50) #De coördinaten van de speler2
-coordsBall = (scrWidth / 2 - 10, scrHeight / 2 - 10, scrWidth / 2 + 10, scrHeight / 2 + 10) #De coördinaten van de bal
+coordsBall = Ball(scrDimen)
 
 def subscribes():
     global client
@@ -34,31 +33,37 @@ def on_message(clients, userdata, message):
         print("up1")
         paddle1.movePaddle("up")
         print(paddle1.coords)
+        client.publish("/player1/server/up", paddle1.coords)
     
     if "/player1/client/down" in message.topic:
         print("down1")
         paddle1.movePaddle("down")
         print(paddle1.coords)
+        client.publish("/player1/server/down", paddle1.coords)
     
     if "/player1/client/fast" in message.topic:
         print("fast1")
         paddle1.changeSpeed()
         print(paddle1.speed)
+        client.publish("/player1/server/fast", paddle1.speed)
     
     if "/player2/client/up" in message.topic:
         print("up2")
         paddle2.movePaddle("up")
         print(paddle2.coords)
+        client.publish("/player2/server/up", paddle2.coords)
     
     if "/player2/client/down" in message.topic:
         print("down2")
         paddle2.movePaddle("down")
         print(paddle2.coords)
+        client.publish("/player2/server/down", paddle2.coords)
     
     if "/player2/client/fast" in message.topic:
         print("fast2")
         paddle2.changeSpeed()
         print(paddle2.speed)
+        client.publish("/player2/server/fast", paddle2.speed)
     
     if "/client/start" in message.topic:
         print("start")
@@ -73,8 +78,6 @@ client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
 client.loop_start() #start the loop
 subscribes()
-
-
 
 try:
 	while True:
