@@ -1,5 +1,3 @@
-import paho.mqtt.client as client
-
 class Paddle(object):
 
     leftPos = rightPos = 0
