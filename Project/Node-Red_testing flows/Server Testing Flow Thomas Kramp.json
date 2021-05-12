@@ -1,37 +1,20 @@
 [
     {
-        "id": "b3b5fe05.e8fc1",
+        "id": "ca6300fb.95829",
         "type": "mqtt in",
         "z": "2253d5bd.aa837a",
         "name": "",
-        "topic": "/ball/coords",
+        "topic": "/server/startNext",
         "qos": "2",
         "datatype": "auto",
         "broker": "63211e6f.957c1",
-        "x": 110,
-        "y": 340,
+        "x": 120,
+        "y": 280,
         "wires": [
             [
-                "1df397eb.552818"
+                "8fa66b0c.907a08"
             ]
         ]
-    },
-    {
-        "id": "1df397eb.552818",
-        "type": "debug",
-        "z": "2253d5bd.aa837a",
-        "name": "Ball",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 330,
-        "y": 340,
-        "wires": []
     },
     {
         "id": "63211e6f.957c1",

@@ -10,7 +10,7 @@ scrDimen = (scrHeight, scrWidth) = (600, 500)
 paddle1 = Paddle(scrDimen, True)
 paddle2 = Paddle(scrDimen, False)
 ball = Ball(scrDimen)
-stop = False
+stop = start = False
 
 def subscribes():
     global client
@@ -27,7 +27,7 @@ def subscribes():
     client.subscribe("/client/player")
 
 def on_message(clients, userdata, message):
-    global paddle1, paddle2
+    global paddle1, paddle2, start
     #print(message.payload)
     #print(json.loads(message.payload))
     # Publish moet in json formaat
@@ -69,6 +69,14 @@ def on_message(clients, userdata, message):
     
     if "/client/start" in message.topic:
         print("start")
+        for x in range(3):
+            client.publish("/server/startNext", "On")
+            sleep(1)
+            client.publish("/server/startNext", "Off")
+            sleep(1)
+        client.publish("/server/start", "Start")
+        start = True
+        
     
     if "/client/player" in message.topic:
         if paddle1.isSet == False:
@@ -90,10 +98,11 @@ client.loop_start() #start the loop
 subscribes()
 
 while stop == False:
-    ball.moveBall((paddle1, paddle2))
-    print(ball.coords)
-    client.publish("/ball/coords", json.dumps(ball.coords))
-    sleep(1)
+    if start == True:
+        ball.moveBall((paddle1, paddle2))
+        print(ball.coords)
+        client.publish("/ball/coords", json.dumps(ball.coords))
+        sleep(1)
 
 #try:
 #	while True:
