@@ -17,77 +17,83 @@ class Ball(object):
         (scrHeight, scrWidth) = self.scrDimen
         (speedX, speedY) = self.speed
 
-        # Kijk voor botsingen
+        # Kijk voor botsingen met scherm
         if leftPos + self.xSpeed <= 0 or rightPos + speedX >= scrWidth:
             speedX = -speedX
         if topPos + self.ySpeed <= 0 or bottomPos + speedY >= scrHeight:
             speedY = -speedY
         
-        #bij het aanraken van een speler
+        # Aanraken van een speler
         for paddle in paddles:
-            if(self.isTouchingBottom(paddle)):
-                self.ySpeed = -self.ySpeed
-        
-            if(self.isTouchingTop(paddle)):
-                self.ySpeed = -self.ySpeed
-        
             if(self.isTouchingLeft(paddle)):
                 self.xSpeed = -self.xSpeed
-        
+
+            if(self.isTouchingTop(paddle)):
+                self.ySpeed = -self.ySpeed
+
             if(self.isTouchingRight(paddle)):
                 self.xSpeed = -self.xSpeed
+        
+            if(self.isTouchingBottom(paddle)):
+                self.ySpeed = -self.ySpeed
 
         # Beweeg de bal
+        leftPos = leftPos + speedX
+        topPos = topPos + speedY
+        rightPos = rightPos + speedX
+        bottomPos = bottomPos + speedY
+
+        # Bewaar de verandering
         self.coords = (leftPos, topPos, rightPos, bottomPos)
         self.speed = (speedX, speedY)
 
         # Start de functie opnieuw op
         # self.canvas.after(50, self.moveBall, paddles)
 
-    def isTouchingBottom(self, obs):
+    def isTouchingLeft(self, obs):
         (left, top, right, bottom) = self.coords
         (obsleft, obstop, obsright, obsbottom) = obs.coords
         (speedX, speedY) = self.speed
         
-        b = (bottom > obsbottom)
-        t = (top + speedY < obsbottom)
-        l = (right > obsleft)
-        r = (left < obsright)
+        l = (left < obsleft)
+        t = (top < obsbottom)
+        r = (right + speedX > obsleft)
+        b = (bottom > obstop)
 
-        return (b and t and l and r)
+        return (l and t and r and b)
 
     def isTouchingTop(self, obs):
         (left, top, right, bottom) = self.coords
         (obsleft, obstop, obsright, obsbottom) = obs.coords
         (speedX, speedY) = self.speed
         
-        b = (bottom + speedY > obstop)
-        t = (top < obstop)
         l = (right > obsleft)
+        t = (top < obstop)
         r = (left < obsright)
+        b = (bottom + speedY > obstop)
 
-        return (b and t and l and r)
-
-    def isTouchingLeft(self, obs):
-        (left, top, right, bottom) = self.coords
-        (obsleft, obstop, obsright, obsbottom) = obs.coords
-        (speedX, speedY) = self.speed
-        
-        b = (bottom > obstop)
-        t = (top < obsbottom)
-        l = (left < obsleft)
-        r = (right + speedX > obsleft)
-
-        return (b and t and l and r)
+        return (l and t and r and b)
 
     def isTouchingRight(self, obs):
         (left, top, right, bottom) = self.coords
         (obsleft, obstop, obsright, obsbottom) = obs.coords
         (speedX, speedY) = self.speed
         
-        b = (bottom > obstop)
-        t = (top < obsbottom)
         l = (left + speedX < obsright)
+        t = (top < obsbottom)
         r = (right > obsright)
+        b = (bottom > obstop)
 
-        return (b and t and l and r)
+        return (l and t and r and b)
+        
+    def isTouchingBottom(self, obs):
+        (left, top, right, bottom) = self.coords
+        (obsleft, obstop, obsright, obsbottom) = obs.coords
+        (speedX, speedY) = self.speed
+        
+        l = (right > obsleft)
+        t = (top + speedY < obsbottom)
+        r = (left < obsright)
+        b = (bottom > obsbottom)
+
+        return (l and t and r and b)
