@@ -101,3 +101,13 @@
 ## Thomas Kramp
 * Collison detectie op bewegende objecten
     * met integratie collision klasse (bol + colision.py) van Robbe
+
+# Week 3 (10/5 16/5)
+## Robbe Elsermans
+
+## Thomas Kramp
+* Game server aanmaken
+    * Aparte paddle en ball classe voor server aanmaken
+    * MQTT publishes en subsrcibes maken op basis van de client side
+    * Punten per bounce toegevoegd
+    * 10 game limiet toegevoegd

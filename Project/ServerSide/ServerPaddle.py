@@ -2,15 +2,16 @@ class Paddle(object):
 
     isSet = False
     coords = (0, 0, 0, 0)
-    speed = 0
+    speed = (0, 0)
+    points = 0
 
     def __init__(self, scrDimen, leftPaddle):
         # Dimensies van het scherm bijhouden
         self.scrDimen = (scrHeight, scrWidth) = scrDimen
 
         # Coordinaten van het pad instellen
-        # coords = (X-begin, Y-begin, X-end, Y-end)
         if  leftPaddle:
+            # coords = (X-begin, Y-begin, X-end, Y-end)
             self.coords = (10, scrHeight / 2 - 50, 20, scrHeight / 2 + 50)
         else:
             self.coords = (scrWidth - 20, scrHeight / 2 - 50, scrWidth - 10, scrHeight / 2 + 50)
@@ -40,3 +41,11 @@ class Paddle(object):
             self.speed = 20
         else:
             self.speed = 3
+
+    def resetPaddle(self):        
+        # Reset de plaats van de paddle
+        (scrHeight, scrWidth) = self.scrDimen
+        (leftPos, topPos, rightPos, bottomPos) = self.coords
+        topPos = scrHeight / 2 - 10
+        bottomPos = scrHeight / 2 + 10
+        self.coords = (leftPos, topPos, rightPos, bottomPos)
