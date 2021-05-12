@@ -1,0 +1,542 @@
+[
+    {
+        "id": "2253d5bd.aa837a",
+        "type": "tab",
+        "label": "Server Check",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "c075a080.3c5a9",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player1/client/up",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 790,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "4b338b52.dfebd4",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player1/client/down",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 800,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "20811f58.6e627",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player1/client/fast",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 790,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "d2d98973.0377b8",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player2/client/up",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 790,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "fe400818.338e38",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player2/client/down",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 800,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "d7935ff6.3dfe7",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player2/client/fast",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 790,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "e6a00b9e.fff148",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/client/start",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 770,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "d2987fc7.83cd9",
+        "type": "mqtt out",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/client/player",
+        "qos": "",
+        "retain": "",
+        "broker": "63211e6f.957c1",
+        "x": 770,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "5718663.8e5e998",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Up\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 40,
+        "wires": [
+            [
+                "c075a080.3c5a9"
+            ]
+        ]
+    },
+    {
+        "id": "1dfbad95.0683d2",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Down\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 80,
+        "wires": [
+            [
+                "4b338b52.dfebd4"
+            ]
+        ]
+    },
+    {
+        "id": "6b15a8e7.d408f8",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Fast\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 120,
+        "wires": [
+            [
+                "20811f58.6e627"
+            ]
+        ]
+    },
+    {
+        "id": "64157c26.926ef4",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Up\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 180,
+        "wires": [
+            [
+                "d2d98973.0377b8"
+            ]
+        ]
+    },
+    {
+        "id": "a049275e.f39ed8",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Down\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 220,
+        "wires": [
+            [
+                "fe400818.338e38"
+            ]
+        ]
+    },
+    {
+        "id": "bd7334f2.a0a7d8",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Fast\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 260,
+        "wires": [
+            [
+                "d7935ff6.3dfe7"
+            ]
+        ]
+    },
+    {
+        "id": "cba785ad.6f89d8",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Start\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 320,
+        "wires": [
+            [
+                "e6a00b9e.fff148"
+            ]
+        ]
+    },
+    {
+        "id": "48926e7d.45368",
+        "type": "inject",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "\"Player\"",
+        "payloadType": "json",
+        "x": 610,
+        "y": 360,
+        "wires": [
+            [
+                "d2987fc7.83cd9"
+            ]
+        ]
+    },
+    {
+        "id": "4c74d10.e10753",
+        "type": "aedes broker",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "mqtt_port": 1883,
+        "mqtt_ws_bind": "port",
+        "mqtt_ws_port": null,
+        "mqtt_ws_path": "",
+        "cert": "",
+        "key": "",
+        "certname": "",
+        "keyname": "",
+        "dburl": "",
+        "usetls": false,
+        "x": 470,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bd5ab9e2.621eb8",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player1/server/up",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 130,
+        "y": 40,
+        "wires": [
+            [
+                "58b0e7c3.01eea8"
+            ]
+        ]
+    },
+    {
+        "id": "58b0e7c3.01eea8",
+        "type": "debug",
+        "z": "2253d5bd.aa837a",
+        "name": "Player 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "2df4f391.0fc9ac",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player1/server/down",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 130,
+        "y": 80,
+        "wires": [
+            [
+                "58b0e7c3.01eea8"
+            ]
+        ]
+    },
+    {
+        "id": "1edd1ed8.138331",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player1/server/fast",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 130,
+        "y": 120,
+        "wires": [
+            [
+                "58b0e7c3.01eea8"
+            ]
+        ]
+    },
+    {
+        "id": "839b4d61.e1d81",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player2/server/up",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 130,
+        "y": 180,
+        "wires": [
+            [
+                "d3634341.7de9a"
+            ]
+        ]
+    },
+    {
+        "id": "aae8f06f.b2f1c",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player2/server/down",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 130,
+        "y": 220,
+        "wires": [
+            [
+                "d3634341.7de9a"
+            ]
+        ]
+    },
+    {
+        "id": "3c04842b.b256dc",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/player2/server/fast",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "d3634341.7de9a"
+            ]
+        ]
+    },
+    {
+        "id": "a91ee080.3c9fa",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/server/start",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 110,
+        "y": 320,
+        "wires": [
+            [
+                "8fa66b0c.907a08"
+            ]
+        ]
+    },
+    {
+        "id": "dad53c9f.c34f9",
+        "type": "mqtt in",
+        "z": "2253d5bd.aa837a",
+        "name": "",
+        "topic": "/server/player",
+        "qos": "2",
+        "datatype": "auto",
+        "broker": "63211e6f.957c1",
+        "x": 110,
+        "y": 360,
+        "wires": [
+            [
+                "8fa66b0c.907a08"
+            ]
+        ]
+    },
+    {
+        "id": "d3634341.7de9a",
+        "type": "debug",
+        "z": "2253d5bd.aa837a",
+        "name": "Player 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 340,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "8fa66b0c.907a08",
+        "type": "debug",
+        "z": "2253d5bd.aa837a",
+        "name": "Server",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 330,
+        "y": 340,
+        "wires": []
+    },
+    {
+        "id": "63211e6f.957c1",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "127.0.0.1",
+        "port": "1883",
+        "clientid": "",
+        "usetls": false,
+        "compatmode": false,
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    }
+]

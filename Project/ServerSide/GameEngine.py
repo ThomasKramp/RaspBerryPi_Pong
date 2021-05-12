@@ -1,5 +1,4 @@
 import paho.mqtt.client as mqtt
-import paho.mqtt.subscribe as subscribe
 import json
 
 from ServerPaddle import Paddle
