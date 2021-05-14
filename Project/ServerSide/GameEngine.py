@@ -88,15 +88,17 @@ def on_message(clients, userdata, message):
                 client.publish("/server/player", 2)
                 print("Player 2 selected")
             else:
+                client.publish("/server/player", 3)
                 print("Watcher Added")
 
 def signalStart():
     global client
     for x in range(3):
-        client.publish("/server/startNext", "On")
+        sleep(2)
+        client.publish("/server/startnext", "On")
         print("On")
         sleep(1)
-        client.publish("/server/startNext", "Off")
+        client.publish("/server/startnext", "Off")
         print("Off")
         sleep(1)
 
@@ -112,7 +114,7 @@ while stop == False:
             ball.moveBall((paddle1, paddle2))
             print(ball.coords)
             client.publish("/ball/coords", json.dumps(ball.coords))
-            sleep(1)
+            sleep(3)
         else:
             # Geeft de juiste speler de punten
             if ball.goal == "Right":
