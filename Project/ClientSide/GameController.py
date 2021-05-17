@@ -163,6 +163,6 @@ try:
 
 except KeyboardInterrupt:
     BTNDOWN.RmInter()
-    BTNUp.RmInter()
+    BTNUP.RmInter()
     BTNSPEED.RmInter()
     GPIO.cleanup()
