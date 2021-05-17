@@ -1,9 +1,11 @@
 class Paddle(object):
 
+    # Coordinaten in het begin doorsturen bij nieuw spel
     isSet = False
     coords = (0, 0, 0, 0)
     speed = (0, 0)
     points = 0
+    player = 0
 
     def __init__(self, scrDimen, leftPaddle):
         # Dimensies van het scherm bijhouden
@@ -46,6 +48,6 @@ class Paddle(object):
         # Reset de plaats van de paddle
         (scrHeight, scrWidth) = self.scrDimen
         (leftPos, topPos, rightPos, bottomPos) = self.coords
-        topPos = scrHeight / 2 - 10
-        bottomPos = scrHeight / 2 + 10
+        topPos = scrHeight / 2 - 50
+        bottomPos = scrHeight / 2 + 50
         self.coords = (leftPos, topPos, rightPos, bottomPos)

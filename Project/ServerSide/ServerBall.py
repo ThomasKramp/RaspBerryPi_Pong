@@ -14,7 +14,7 @@ class Ball(object):
         self.coords = (scrWidth / 2 - 10, scrHeight / 2 - 10, scrWidth / 2 + 10, scrHeight / 2 + 10)
 
         # Snelheid van de bal instellen
-        self.speed = (speedX, speedY) = (23, 23)
+        self.speed = (speedX, speedY) = (17, 17)
 
     def moveBall(self, paddles):
         # Huidige positie ophalen
@@ -55,10 +55,11 @@ class Ball(object):
                 speedY = -speedY
 
         # Beweeg de bal
-        leftPos = leftPos + speedX
-        topPos = topPos + speedY
-        rightPos = rightPos + speedX
-        bottomPos = bottomPos + speedY
+        if self.goal == "":
+            leftPos = leftPos + speedX
+            topPos = topPos + speedY
+            rightPos = rightPos + speedX
+            bottomPos = bottomPos + speedY
 
         # Bewaar de verandering
         self.coords = (leftPos, topPos, rightPos, bottomPos)

@@ -1,12 +1,13 @@
 import paho.mqtt.client as mqtt
 from time import sleep
+import random
 import json
 
 from ServerPaddle import Paddle
 from ServerBall import Ball
 
-broker_address="127.0.0.1"
-scrDimen = (scrHeight, scrWidth) = (600, 500)
+broker_address="192.168.35.206"
+scrDimen = (scrHeight, scrWidth) = (500, 500)
 paddle1 = Paddle(scrDimen, True)
 paddle2 = Paddle(scrDimen, False)
 ball = Ball(scrDimen)
@@ -27,46 +28,53 @@ def subscribes():
     client.subscribe("/client/start")
     client.subscribe("/client/player")
 
+def checkPaddle(paddle, message):
+    if paddle.player == 1:
+        if "/player1/client/up" in message.topic:
+            print("Player 1 up")
+            paddle.movePaddle("up")
+            print(paddle.coords)
+            client.publish("/player1/server/coords", json.dumps(paddle.coords))
+        
+        if "/player1/client/down" in message.topic:
+            print("Player 1 down")
+            paddle.movePaddle("down")
+            print(paddle.coords)
+            client.publish("/player1/server/coords", json.dumps(paddle.coords))
+        
+        if "/player1/client/fast" in message.topic:
+            print("Player 1 fast")
+            paddle.changeSpeed()
+            print(paddle.speed)
+            client.publish("/player1/server/speed", paddle.speed)
+    
+    if paddle.player == 2:
+        if "/player2/client/up" in message.topic:
+            print("Player 2 up")
+            paddle.movePaddle("up")
+            print(paddle.coords)
+            client.publish("/player2/server/coords", json.dumps(paddle.coords))
+        
+        if "/player2/client/down" in message.topic:
+            print("Player 2 down")
+            paddle.movePaddle("down")
+            print(paddle.coords)
+            client.publish("/player2/server/coords", json.dumps(paddle.coords))
+        
+        if "/player2/client/fast" in message.topic:
+            print("Player 2 fast")
+            paddle.changeSpeed()
+            print(paddle.speed)
+            client.publish("/player2/server/speed", paddle.speed)
+
 def on_message(clients, userdata, message):
     global paddle1, paddle2, start
-    #print(message.payload)
-    #print(json.loads(message.payload))
+    # print(message.payload)
+    # print(json.loads(message.payload))
     # Publish moet in json formaat
-    if "/player1/client/up" in message.topic:
-        print("Player 1 up")
-        paddle1.movePaddle("up")
-        print(paddle1.coords)
-        client.publish("/player1/server/coords", json.dumps(paddle1.coords))
     
-    if "/player1/client/down" in message.topic:
-        print("Player 1 down")
-        paddle1.movePaddle("down")
-        print(paddle1.coords)
-        client.publish("/player1/server/coords", json.dumps(paddle1.coords))
-    
-    if "/player1/client/fast" in message.topic:
-        print("Player 1 fast")
-        paddle1.changeSpeed()
-        print(paddle1.speed)
-        client.publish("/player1/server/speed", paddle1.speed)
-    
-    if "/player2/client/up" in message.topic:
-        print("Player 2 up")
-        paddle2.movePaddle("up")
-        print(paddle2.coords)
-        client.publish("/player2/server/coords", json.dumps(paddle2.coords))
-    
-    if "/player2/client/down" in message.topic:
-        print("Player 2 down")
-        paddle2.movePaddle("down")
-        print(paddle2.coords)
-        client.publish("/player2/server/coords", json.dumps(paddle2.coords))
-    
-    if "/player2/client/fast" in message.topic:
-        print("Player 2 fast")
-        paddle2.changeSpeed()
-        print(paddle2.speed)
-        client.publish("/player2/server/speed", paddle2.speed)
+    checkPaddle(paddle1, message)
+    checkPaddle(paddle2, message)
     
     if "/client/start" in message.topic:
         print("start")
@@ -80,21 +88,26 @@ def on_message(clients, userdata, message):
     if "/client/player" in message.topic:
         if paddle1.isSet == False:
             paddle1.isSet = True
+            paddle1.player = 1
             client.publish("/server/player", 1)
+            client.publish("/server/selectplayer", True)
             print("Player 1 selected")
         else:
             if paddle2.isSet == False:
                 paddle2.isSet = True
+                paddle2.player = 200
                 client.publish("/server/player", 2)
+                client.publish("/server/selectplayer", True)
                 print("Player 2 selected")
             else:
                 client.publish("/server/player", 3)
                 print("Watcher Added")
+        sleep(5)
 
 def signalStart():
     global client
     for x in range(3):
-        sleep(2)
+        sleep(1)
         client.publish("/server/startnext", "On")
         print("On")
         sleep(1)
@@ -114,14 +127,25 @@ while stop == False:
             ball.moveBall((paddle1, paddle2))
             print(ball.coords)
             client.publish("/ball/coords", json.dumps(ball.coords))
-            sleep(3)
+            sleep(1)
         else:
+            willy = random.randint(1, 3)
+            print("Willy is " + str(willy))
+            if willy == 1:
+                paddle1.player = 1
+                paddle2.player = 2
+                client.publish("/server/selectplayer", True)
+            else:
+                paddle1.player = 2
+                paddle2.player = 1
+                client.publish("/server/selectplayer", False)
+
             # Geeft de juiste speler de punten
-            if ball.goal == "Right":
+            if ball.goal == "Left":
                 paddle1.points += ball.bounces * 5
                 client.publish("/player1/points", paddle1.points)
                 print("Player 1 scores")
-            if ball.goal == "Left":
+            if ball.goal == "Right":
                 paddle2.points += ball.bounces * 5
                 client.publish("/player2/points", paddle2.points)
                 print("Player 2 scores")
