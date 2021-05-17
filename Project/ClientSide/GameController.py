@@ -162,7 +162,7 @@ try:
 		sleep(0.3)
 
 except KeyboardInterrupt:
-	BTNDOWN.RmInter()
-    BTNUP.RmInter()
+    BTNDOWN.RmInter()
+    BTNUp.RmInter()
     BTNSPEED.RmInter()
-	GPIO.cleanup()
+    GPIO.cleanup()
