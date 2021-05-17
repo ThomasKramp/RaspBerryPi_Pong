@@ -151,7 +151,7 @@ GreenLedR = LedHW(GPIO, 10)
 GreenLedL = LedHW(GPIO, 0)
 YellowLed = LedHW(GPIO, 9)
 
-broker_address="192.168.35.206" 
+broker_address="127.0.0.1" 
 client = mqtt.Client(client_id="Client2",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
@@ -165,4 +165,4 @@ playerSelector = 0
 client.publish("/client/player",1) #Eerste initiatie naar server toe om speler te worden
 
 while(True):
-    print("x")
+    sleep(0.2)
