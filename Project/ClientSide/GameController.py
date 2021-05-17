@@ -42,9 +42,9 @@ def on_message(clients, userdata, message):
 
     if(userdata == "initial"):
         if("/server/player" in message.topic):
-            print(message.payload)
+            #print(message.payload)
             x = message.payload.decode("utf-8") 
-            print(x)
+            #print(x)
             playerSelector = int(x)
             name = ""
             if(playerSelector == 1):
@@ -71,7 +71,7 @@ def on_message(clients, userdata, message):
 
         if("/server/startnext" in message.topic):
             YellowLed.Toggle()
-            print("Led On Off")
+            #print("Led On Off")
 
         if("server/selectplayer" in message.topic):
             print(message.payload)
@@ -90,8 +90,6 @@ def PaddleUp():
         client.publish("/player1/client/up","True")
     elif(playerSelector == 2):
         client.publish("/player2/client/up","True")
-    else:
-        print("Enkel kijken")
 
 def PaddleSpeed():
     #Stuur True naar MQTT
@@ -105,8 +103,6 @@ def PaddleSpeed():
         client.publish("/player1/client/fast",speed)
     elif(playerSelector == 2):
         client.publish("/player2/client/fast",speed)
-    else:
-        print("Enkel kijken")
 
 def PaddleDown():
     #Stuur True naar MQTT
@@ -116,30 +112,27 @@ def PaddleDown():
         client.publish("/player1/client/down","True")
     elif(playerSelector == 2):
         client.publish("/player2/client/down","True")
-    else:
-        print("Enkel kijken")
 
 def Start():
-    print("Start")
+    #print("Start")
     client.publish("/client/start","True")
 
 def isr(channel):
     global hasStarted
     if(channel == 27):
-        print("BTN Up")
+        #print("BTN Up")
         PaddleUp()
     if(channel == 22):
-        print("BTN Down")
+        #print("BTN Down")
         PaddleDown()
     if(channel == 5 and hasStarted == True):
-        print("BTN Speed")
+        #print("BTN Speed")
         PaddleSpeed()
     elif (channel == 5 and hasStarted == False):
         Start()
         hasStarted = True
 
 hasStarted = False
-
 #Aanmaken knopjes
 BTNUP = ButtonHW(GPIO, 27, isr)
 BTNDOWN = ButtonHW(GPIO, 22, isr)
@@ -164,5 +157,12 @@ speed = False
 playerSelector = 0
 client.publish("/client/player",1) #Eerste initiatie naar server toe om speler te worden
 
-while(True):
-    sleep(0.2)
+try:
+	while(True):
+		sleep(0.3)
+
+except KeyboardInterrupt:
+	BTNDOWN.RmInter()
+    BTNUP.RmInter()
+    BTNSPEED.RmInter()
+	GPIO.cleanup()

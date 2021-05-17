@@ -37,7 +37,7 @@ def on_message(clients, userdata, message):
     if("/player1/points" in message.topic):
         points1.changeText("player1: ", json.loads(message.payload))
     if("/server/bounces" in message.topic):
-        ticks.changeText("player2: ", json.loads(message.payload))
+        ticks.changeText("ticks: ", json.loads(message.payload))
         
 
 broker_address="192.168.60.206"
