@@ -115,6 +115,9 @@
 # Week 4 (17/5 23/5)
 ## Robbe Elsermans
 * Debugging
+* De ClientConsole opsplitsen
+    * controller program aanmaken voor RPi voor leds en btns 
+    * console program aanmaken voor de paddles te bekijken
 
 ## Thomas Kramp
 * Debugging
