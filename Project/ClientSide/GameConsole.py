@@ -7,7 +7,7 @@ from Label import Label
 
 import paho.mqtt.client as mqtt
 
-import time
+from time import sleep
 import json
 
 def subscribes():
@@ -46,7 +46,6 @@ def on_message(clients, userdata, message):
             x = message.payload.decode("utf-8") 
             print(x)
             playerSelector = int(x)
-            client.loop_stop() #stop de loop
             name = ""
             if(playerSelector == 1):
                 print("verander client name naar 'Player1'")
@@ -57,8 +56,8 @@ def on_message(clients, userdata, message):
             elif(playerSelector == 3):
                 print("verander client name naar 'Watcher'")
                 name = "Watcher"
-
-                
+            client.loop_stop() #stop de loop
+            sleep(0.5)
             client = mqtt.Client(client_id=name,clean_session=True, userdata="inGame", protocol=mqtt.MQTTv31) #create new instance
             client.on_message=on_message #attach function to callback
             client.connect(host=broker_address,port=1883) #connect to broker
@@ -92,6 +91,7 @@ def on_message(clients, userdata, message):
 
         if("/server/startnext" in message.topic):
             YellowLed.Toggle()
+            print("Led On Off")
         if("server/selectplayer" in message.topic):
             print(message.payload)
             x = message.payload.decode("utf-8") 
@@ -142,7 +142,7 @@ def Start():
     print("Start")
     client.publish("/client/start","True")
 
-broker_address="127.0.0.1" 
+broker_address="192.168.35.206" 
 client = mqtt.Client(client_id="Client2",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
