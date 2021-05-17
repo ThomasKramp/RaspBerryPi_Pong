@@ -1,10 +1,9 @@
 #!/usr/bin/python3
-from Project.ClientSide.Button import Button
 import RPi.GPIO as GPIO
 import paho.mqtt.client as mqtt
 from time import sleep
-from Led.py import LedHW
-from Button.py import ButtonHW
+from Led import LedHW
+from Button import ButtonHW
 import json
 
 
