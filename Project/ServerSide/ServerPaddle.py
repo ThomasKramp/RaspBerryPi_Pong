@@ -35,7 +35,7 @@ class Paddle(object):
         
         # Positie aanpassen
         self.coords = (leftPos, topPos, rightPos, bottomPos)
-        print(self.coords)
+        # print(self.coords)
 
     def changeSpeed(self):
         # Stel de huidige snelheid in
@@ -43,6 +43,7 @@ class Paddle(object):
             self.speed = 20
         else:
             self.speed = 5
+        # print(self.speed)
 
     def resetPaddle(self):        
         # Reset de plaats van de paddle

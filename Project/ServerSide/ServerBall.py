@@ -3,7 +3,7 @@ class Ball(object):
     coords = (0, 0, 0, 0)
     speed = (0, 0)
     bounces = 0
-    goalAtPaddle = 0
+    goalAtPaddle = ""
 
     def __init__(self, scrDimen):
         # Dimensies van het scherm bijhouden
@@ -14,7 +14,7 @@ class Ball(object):
         self.coords = (scrWidth / 2 - 10, scrHeight / 2 - 10, scrWidth / 2 + 10, scrHeight / 2 + 10)
 
         # Snelheid van de bal instellen
-        self.speed = (speedX, speedY) = (17, 17)
+        self.speed = (speedX, speedY) = (31, 31)
 
     def moveBall(self, paddles):
         # Huidige positie ophalen
@@ -50,13 +50,13 @@ class Ball(object):
         if leftPos + speedX <= 0 or rightPos + speedX >= scrWidth:
             # Waar is de goal
             if leftPos + speedX <= 0:
-                self.goalAtPaddle = 1
+                self.goalAtPaddle = "Left"
             if rightPos + speedX >= scrWidth:
-                self.goalAtPaddle = 2
+                self.goalAtPaddle = "Right"
             speedX = -speedX
 
         # Beweeg de bal
-        if self.goalAtPaddle == 0:
+        if self.goalAtPaddle == "":
             leftPos = leftPos + speedX
             topPos = topPos + speedY
             rightPos = rightPos + speedX
@@ -130,4 +130,4 @@ class Ball(object):
 
         # Reset de variabelen
         self.bounces = 0
-        self.goalAtPaddle = 0
+        self.goalAtPaddle = ""

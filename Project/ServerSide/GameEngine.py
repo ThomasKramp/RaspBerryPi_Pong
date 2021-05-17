@@ -40,37 +40,31 @@ def on_message(clients, userdata, message):
     if "/player1/client/up" in message.topic:
         print("Player 1 up")
         player1.paddle.movePaddle("up")
-        print(player1.paddle.coords)
         client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
     
     if "/player1/client/down" in message.topic:
         print("Player 1 down")
         player1.paddle.movePaddle("down")
-        print(player1.paddle.coords)
         client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
     
     if "/player1/client/fast" in message.topic:
         print("Player 1 fast")
         player1.paddle.changeSpeed()
-        print(player1.paddle.speed)
         client.publish("/player1/server/speed", player1.paddle.speed)
     
     if "/player2/client/up" in message.topic:
         print("Player 2 up")
         player2.paddle.movePaddle("up")
-        print(player2.paddle.coords)
         client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
     
     if "/player2/client/down" in message.topic:
         print("Player 2 down")
         player2.paddle.movePaddle("down")
-        print(player2.paddle.coords)
         client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
     
     if "/player2/client/fast" in message.topic:
         print("Player 2 fast")
         player2.paddle.changeSpeed()
-        print(player2.paddle.speed)
         client.publish("/player2/server/speed", player2.paddle.speed)
     
     if "/client/start" in message.topic:
@@ -80,7 +74,7 @@ def on_message(clients, userdata, message):
         client.publish("/player2/server/coords", json.dumps(paddle2.coords))
         client.publish("/ball/coords", json.dumps(ball.coords))
         start = True
-        ball.goalAtPaddle = -1
+        ball.goalAtPaddle = "Setup"
     
     if "/client/player" in message.topic:
         if player1.isSet == False:
@@ -97,20 +91,21 @@ def on_message(clients, userdata, message):
             else:
                 client.publish("/server/player", 3)
                 print("Watcher Added")
-        sleep(5)
 
 def signalStart():
     global client
+    print("start")
     client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
     client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
     client.publish("/ball/coords", json.dumps(ball.coords))
     for x in range(3):
         client.publish("/server/startnext", "On")
-        print("On")
+        # print("On")
         sleep(1)
         client.publish("/server/startnext", "Off")
-        print("Off")
+        # print("Off")
         sleep(1)
+    sleep(1)
 
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
@@ -121,12 +116,27 @@ subscribes()
 while stop == False:
     if start == True:
         client.publish("/server/ticks", ball.bounces)
-        if ball.goalAtPaddle == 0:
+        if ball.goalAtPaddle == "":
             ball.moveBall((player1.paddle, player2.paddle))
             # print(ball.coords)
             client.publish("/ball/coords", json.dumps(ball.coords))
             sleep(1)
         else:
+            print("Left paddle at " + str(paddle1.side))
+            print("Right paddle at " + str(paddle2.side))
+            print("Player 1 at " + str(player1.paddle.side))
+            print("Player 2 at " + str(player2.paddle.side))
+
+            # Geeft de juiste speler de punten
+            if player1.paddle.side == ball.goalAtPaddle:
+                player2.points += ball.bounces * 5
+                client.publish("/player2/points", player2.points)
+                print("Player 2 scores")
+            if player2.paddle.side == ball.goalAtPaddle:
+                player1.points += ball.bounces * 5
+                client.publish("/player1/points", player1.points)
+                print("Player 1 scores")
+            
             willy = random.randint(1, 2)
             print("Willy is " + str(willy))
             if willy == 1:
@@ -137,26 +147,6 @@ while stop == False:
                 player1.paddle = paddle2
                 player2.paddle = paddle1
                 client.publish("/server/selectplayer", False)
-
-            # Geeft de juiste speler de punten
-            if ball.goalAtPaddle == 1:
-                if player1.paddle == paddle2:
-                    player1.points += ball.bounces * 5
-                    client.publish("/player1/points", player1.points)
-                    print("Player 1 scores")
-                else:
-                    player2.points += ball.bounces * 5
-                    client.publish("/player2/points", player2.points)
-                    print("Player 2 scores")
-            if ball.goalAtPaddle == 2:
-                if player1.paddle == paddle1:
-                    player1.points += ball.bounces * 5
-                    client.publish("/player1/points", player1.points)
-                    print("Player 1 scores")
-                else:
-                    player2.points += ball.bounces * 5
-                    client.publish("/player2/points", player2.points)
-                    print("Player 2 scores")
             
             # Reset de coordinaten van alle objecten
             ball.resetBall()
