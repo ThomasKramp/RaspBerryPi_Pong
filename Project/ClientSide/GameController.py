@@ -163,3 +163,6 @@ subscribes()
 speed = False
 playerSelector = 0
 client.publish("/client/player",1) #Eerste initiatie naar server toe om speler te worden
+
+while(True):
+    print("x")
