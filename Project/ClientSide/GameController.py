@@ -141,9 +141,9 @@ def isr(channel):
 hasStarted = False
 
 #Aanmaken knopjes
-BTNUP = Button(GPIO, 27, isr)
-BTNDOWN = Button(GPIO, 22, isr)
-BTNSPEED = Button(GPIO, 5, isr)
+BTNUP = ButtonHW(GPIO, 27, isr)
+BTNDOWN = ButtonHW(GPIO, 22, isr)
+BTNSPEED = ButtonHW(GPIO, 5, isr)
 #Aanmaken leds
 RedLedR = LedHW(GPIO, 17)
 RedLedL = LedHW(GPIO, 11)
