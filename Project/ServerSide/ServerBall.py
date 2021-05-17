@@ -3,7 +3,7 @@ class Ball(object):
     coords = (0, 0, 0, 0)
     speed = (0, 0)
     bounces = 0
-    goal = ""
+    goalAtPaddle = 0
 
     def __init__(self, scrDimen):
         # Dimensies van het scherm bijhouden
@@ -21,18 +21,6 @@ class Ball(object):
         (leftPos, topPos, rightPos, bottomPos) = self.coords
         (scrHeight, scrWidth) = self.scrDimen
         (speedX, speedY) = self.speed
-
-        # Kijk voor botsingen met scherm
-        if leftPos + speedX <= 0 or rightPos + speedX >= scrWidth:
-            # Waar is de goal
-            if leftPos + speedX <= 0:
-                self.goal = "Left"
-            if rightPos + speedX >= scrWidth:
-                self.goal = "Right"
-            speedX = -speedX
-        
-        if topPos + speedY <= 0 or bottomPos + speedY >= scrHeight:
-            speedY = -speedY
         
         # Aanraken van een speler
         for paddle in paddles:
@@ -40,7 +28,7 @@ class Ball(object):
                 speedX = -speedX
                 # Telt aantal kaatsingen tellen
                 self.bounces += 1
-                print("bounce")
+                print("Bounce back left")
 
             if(self.isTouchingTop(paddle)):
                 speedY = -speedY
@@ -49,13 +37,26 @@ class Ball(object):
                 speedX = -speedX
                 # Telt aantal kaatsingen tellen
                 self.bounces += 1
-                print("bounce")
+                print("Bounce back right")
         
             if(self.isTouchingBottom(paddle)):
                 speedY = -speedY
+                
+        
+        # Kijk voor botsingen met scherm
+        if topPos + speedY <= 0 or bottomPos + speedY >= scrHeight:
+            speedY = -speedY
+
+        if leftPos + speedX <= 0 or rightPos + speedX >= scrWidth:
+            # Waar is de goal
+            if leftPos + speedX <= 0:
+                self.goalAtPaddle = 1
+            if rightPos + speedX >= scrWidth:
+                self.goalAtPaddle = 2
+            speedX = -speedX
 
         # Beweeg de bal
-        if self.goal == "":
+        if self.goalAtPaddle == 0:
             leftPos = leftPos + speedX
             topPos = topPos + speedY
             rightPos = rightPos + speedX
@@ -129,4 +130,4 @@ class Ball(object):
 
         # Reset de variabelen
         self.bounces = 0
-        self.goal = ""
+        self.goalAtPaddle = 0

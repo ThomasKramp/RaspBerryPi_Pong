@@ -5,11 +5,14 @@ import json
 
 from ServerPaddle import Paddle
 from ServerBall import Ball
+from ServerPlayer import Player
 
 broker_address="192.168.35.206"
 scrDimen = (scrHeight, scrWidth) = (500, 500)
-paddle1 = Paddle(scrDimen, True)
-paddle2 = Paddle(scrDimen, False)
+paddle1 = Paddle(scrDimen, "Left")
+paddle2 = Paddle(scrDimen, "Right")
+player1 = Player(paddle1)
+player2 = Player(paddle2)
 ball = Ball(scrDimen)
 stop = start = False
 games = 0
@@ -28,74 +31,66 @@ def subscribes():
     client.subscribe("/client/start")
     client.subscribe("/client/player")
 
-def checkPaddle(paddle, message):
-    if paddle.player == 1:
-        if "/player1/client/up" in message.topic:
-            print("Player 1 up")
-            paddle.movePaddle("up")
-            print(paddle.coords)
-            client.publish("/player1/server/coords", json.dumps(paddle.coords))
-        
-        if "/player1/client/down" in message.topic:
-            print("Player 1 down")
-            paddle.movePaddle("down")
-            print(paddle.coords)
-            client.publish("/player1/server/coords", json.dumps(paddle.coords))
-        
-        if "/player1/client/fast" in message.topic:
-            print("Player 1 fast")
-            paddle.changeSpeed()
-            print(paddle.speed)
-            client.publish("/player1/server/speed", paddle.speed)
-    
-    if paddle.player == 2:
-        if "/player2/client/up" in message.topic:
-            print("Player 2 up")
-            paddle.movePaddle("up")
-            print(paddle.coords)
-            client.publish("/player2/server/coords", json.dumps(paddle.coords))
-        
-        if "/player2/client/down" in message.topic:
-            print("Player 2 down")
-            paddle.movePaddle("down")
-            print(paddle.coords)
-            client.publish("/player2/server/coords", json.dumps(paddle.coords))
-        
-        if "/player2/client/fast" in message.topic:
-            print("Player 2 fast")
-            paddle.changeSpeed()
-            print(paddle.speed)
-            client.publish("/player2/server/speed", paddle.speed)
-
 def on_message(clients, userdata, message):
     global paddle1, paddle2, start
     # print(message.payload)
     # print(json.loads(message.payload))
     # Publish moet in json formaat
     
-    checkPaddle(paddle1, message)
-    checkPaddle(paddle2, message)
+    if "/player1/client/up" in message.topic:
+        print("Player 1 up")
+        player1.paddle.movePaddle("up")
+        print(player1.paddle.coords)
+        client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
+    
+    if "/player1/client/down" in message.topic:
+        print("Player 1 down")
+        player1.paddle.movePaddle("down")
+        print(player1.paddle.coords)
+        client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
+    
+    if "/player1/client/fast" in message.topic:
+        print("Player 1 fast")
+        player1.paddle.changeSpeed()
+        print(player1.paddle.speed)
+        client.publish("/player1/server/speed", player1.paddle.speed)
+    
+    if "/player2/client/up" in message.topic:
+        print("Player 2 up")
+        player2.paddle.movePaddle("up")
+        print(player2.paddle.coords)
+        client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
+    
+    if "/player2/client/down" in message.topic:
+        print("Player 2 down")
+        player2.paddle.movePaddle("down")
+        print(player2.paddle.coords)
+        client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
+    
+    if "/player2/client/fast" in message.topic:
+        print("Player 2 fast")
+        player2.paddle.changeSpeed()
+        print(player2.paddle.speed)
+        client.publish("/player2/server/speed", player2.paddle.speed)
     
     if "/client/start" in message.topic:
         print("start")
-        signalStart()
         client.publish("/server/start", "Start")
         client.publish("/player1/server/coords", json.dumps(paddle1.coords))
         client.publish("/player2/server/coords", json.dumps(paddle2.coords))
         client.publish("/ball/coords", json.dumps(ball.coords))
         start = True
+        ball.goalAtPaddle = -1
     
     if "/client/player" in message.topic:
-        if paddle1.isSet == False:
-            paddle1.isSet = True
-            paddle1.player = 1
+        if player1.isSet == False:
+            player1.isSet = True
             client.publish("/server/player", 1)
             client.publish("/server/selectplayer", True)
             print("Player 1 selected")
         else:
-            if paddle2.isSet == False:
+            if player2.isSet == False:
                 paddle2.isSet = True
-                paddle2.player = 200
                 client.publish("/server/player", 2)
                 client.publish("/server/selectplayer", True)
                 print("Player 2 selected")
@@ -106,8 +101,10 @@ def on_message(clients, userdata, message):
 
 def signalStart():
     global client
+    client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
+    client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
+    client.publish("/ball/coords", json.dumps(ball.coords))
     for x in range(3):
-        sleep(1)
         client.publish("/server/startnext", "On")
         print("On")
         sleep(1)
@@ -123,43 +120,55 @@ subscribes()
 
 while stop == False:
     if start == True:
-        if ball.goal == "":
-            ball.moveBall((paddle1, paddle2))
-            print(ball.coords)
+        client.publish("/server/ticks", ball.bounces)
+        if ball.goalAtPaddle == 0:
+            ball.moveBall((player1.paddle, player2.paddle))
+            # print(ball.coords)
             client.publish("/ball/coords", json.dumps(ball.coords))
             sleep(1)
         else:
-            willy = random.randint(1, 3)
+            willy = random.randint(1, 2)
             print("Willy is " + str(willy))
             if willy == 1:
-                paddle1.player = 1
-                paddle2.player = 2
+                player1.paddle = paddle1
+                player2.paddle = paddle2
                 client.publish("/server/selectplayer", True)
             else:
-                paddle1.player = 2
-                paddle2.player = 1
+                player1.paddle = paddle2
+                player2.paddle = paddle1
                 client.publish("/server/selectplayer", False)
 
             # Geeft de juiste speler de punten
-            if ball.goal == "Left":
-                paddle1.points += ball.bounces * 5
-                client.publish("/player1/points", paddle1.points)
-                print("Player 1 scores")
-            if ball.goal == "Right":
-                paddle2.points += ball.bounces * 5
-                client.publish("/player2/points", paddle2.points)
-                print("Player 2 scores")
+            if ball.goalAtPaddle == 1:
+                if player1.paddle == paddle2:
+                    player1.points += ball.bounces * 5
+                    client.publish("/player1/points", player1.points)
+                    print("Player 1 scores")
+                else:
+                    player2.points += ball.bounces * 5
+                    client.publish("/player2/points", player2.points)
+                    print("Player 2 scores")
+            if ball.goalAtPaddle == 2:
+                if player1.paddle == paddle1:
+                    player1.points += ball.bounces * 5
+                    client.publish("/player1/points", player1.points)
+                    print("Player 1 scores")
+                else:
+                    player2.points += ball.bounces * 5
+                    client.publish("/player2/points", player2.points)
+                    print("Player 2 scores")
             
             # Reset de coordinaten van alle objecten
             ball.resetBall()
-            paddle1.resetPaddle()
-            paddle2.resetPaddle()
+            player1.paddle.resetPaddle()
+            player2.paddle.resetPaddle()
 
             # Kijkt na hoeveel games er geweest zijn
             games += 1
-            if games < 10:
+            if games <= 10:
                 signalStart()
-                print("Start Game " + str(games + 1))
+                print("Player 1 selected")
+                print("Start Game " + str(games))
             else:
                 stop = True
 

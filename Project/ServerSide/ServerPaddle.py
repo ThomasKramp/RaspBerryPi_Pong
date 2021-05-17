@@ -1,25 +1,24 @@
 class Paddle(object):
 
     # Coordinaten in het begin doorsturen bij nieuw spel
-    isSet = False
     coords = (0, 0, 0, 0)
     speed = (0, 0)
-    points = 0
-    player = 0
+    side = ""
 
-    def __init__(self, scrDimen, leftPaddle):
+    def __init__(self, scrDimen, side):
         # Dimensies van het scherm bijhouden
         self.scrDimen = (scrHeight, scrWidth) = scrDimen
 
+        self.side = side
         # Coordinaten van het pad instellen
-        if  leftPaddle:
+        if side == "Left":
             # coords = (X-begin, Y-begin, X-end, Y-end)
             self.coords = (10, scrHeight / 2 - 50, 20, scrHeight / 2 + 50)
-        else:
+        if side == "Right":
             self.coords = (scrWidth - 20, scrHeight / 2 - 50, scrWidth - 10, scrHeight / 2 + 50)
 
         # Snelheid van paddle instellen
-        self.speed = 3
+        self.speed = 5
 
     def movePaddle(self, movement):
         # Huidige positie ophalen
@@ -36,13 +35,14 @@ class Paddle(object):
         
         # Positie aanpassen
         self.coords = (leftPos, topPos, rightPos, bottomPos)
+        print(self.coords)
 
     def changeSpeed(self):
         # Stel de huidige snelheid in
-        if self.speed == 3:
+        if self.speed == 5:
             self.speed = 20
         else:
-            self.speed = 3
+            self.speed = 5
 
     def resetPaddle(self):        
         # Reset de plaats van de paddle
