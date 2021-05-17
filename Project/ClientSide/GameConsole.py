@@ -1,8 +1,6 @@
 import tkinter as tk
 from Paddle import Paddle
 from Ball import Ball
-from Led import Led, LedColors
-from Button import Button
 from Label import Label
 
 import paho.mqtt.client as mqtt
@@ -16,10 +14,13 @@ def subscribes():
     client.subscribe("/player1/server/coords")
     client.subscribe("/player2/server/coords")
     client.subscribe("/ball/coords") 
+    client.subscribe("/player2/points")
+    client.subscribe("/player1/points")
+    client.subscribe("/server/bounces")
 
 # Alle afhandelingen van MQTT
 def on_message(clients, userdata, message):
-    global coordsPlayer1, Pad1, coordsPlayer2, Pad2, coordsBall, Ball, YellowLed, btnStart,broker_address,client,playerSelector
+    global Pad1, Pad2, Ball, points1, points2, ticks
     #print(userdata)
     if("/player1/server/coords" in message.topic):
         Pad1.move(json.loads(message.payload))
@@ -28,10 +29,18 @@ def on_message(clients, userdata, message):
         Pad2.move(json.loads(message.payload))
 
     if("/ball/coords" in message.topic):
-        print(message.payload)
+        #print(message.payload)
         Ball.move(json.loads(message.payload))
 
-broker_address="192.168.35.206" 
+    if("/player2/points" in message.topic):
+        points2.changeText("player2: ", json.loads(message.payload))
+    if("/player1/points" in message.topic):
+        points1.changeText("player1: ", json.loads(message.payload))
+    if("/server/bounces" in message.topic):
+        ticks.changeText("player2: ", json.loads(message.payload))
+        
+
+broker_address="127.0.0.1"
 client = mqtt.Client(client_id="Client",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
@@ -56,7 +65,9 @@ Pad2 = Paddle(canvas, coordsPlayer2, "black")
 Ball = Ball(canvas, coordsBall, "black")
 
 #Aanmaken van scores etc.
-pointsLB = Label(canvas, (0,0),"0")
+points1 = Label(canvas, (scrWidth/2-30,0),"player2: 0")
+points2 = Label(canvas, (scrWidth/2-30,30),"player1: 0")
+ticks = Label(canvas, (scrWidth/2-30, 60),"ticks: 0")
 
 canvas.pack()
 

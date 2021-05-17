@@ -7,7 +7,7 @@ from ServerPaddle import Paddle
 from ServerBall import Ball
 from ServerPlayer import Player
 
-broker_address="192.168.35.206"
+broker_address="127.0.0.1"
 scrDimen = (scrHeight, scrWidth) = (500, 500)
 paddle1 = Paddle(scrDimen, "Left")
 paddle2 = Paddle(scrDimen, "Right")
@@ -129,11 +129,17 @@ while stop == False:
 
             # Geeft de juiste speler de punten
             if player1.paddle.side == ball.goalAtPaddle:
-                player2.points += ball.bounces * 5
+                if(ball.bounces == 0):
+                    player2.points += 1 * 5
+                else:
+                    player2.points = player2.points + (ball.bounces * 5)
                 client.publish("/player2/points", player2.points)
                 print("Player 2 scores")
             if player2.paddle.side == ball.goalAtPaddle:
-                player1.points += ball.bounces * 5
+                if(ball.bounces == 0):
+                    player1.points = player1.points + (5)
+                else:
+                    player1.points = player1.points + (ball.bounces * 5)
                 client.publish("/player1/points", player1.points)
                 print("Player 1 scores")
             

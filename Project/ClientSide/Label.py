@@ -8,9 +8,10 @@ class Label(object):
         self.label = tk.Label(canvas,textvariable=self.text)
         self.label.place(x=coords[0], y=coords[1])
     
-    def changeText(self):
-        global points
-        self.text.set("points: " +str(points))
+    def changeText(self, pre, item):
+        if( __name__ == "__main__"):
+            global points
+        self.text.set(pre + str(item))
 
 if( __name__ == "__main__"):
     def up():
