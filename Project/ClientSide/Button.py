@@ -9,6 +9,16 @@ class Button(object):
     def destroy(self):  #verwijderd een element 
         self.button.destroy()
 
+class ButtonHW(object):
+    def __init__(self, GPIO, pin, isr):
+        self.GPIO = GPIO
+        self.pin = pin
+        self.isr = isr
+        self.GPIO.setup(self.pin, GPIO.IN, pull_up_down=self.GPIO.PUD_DOWN)
+        self.GPIO.add_event_detect(self.pin, GPIO.RISING, callback=self.isr, bouncetime=200)
+    
+    
+
 if __name__  == "__main__":
     def x():
         global xb

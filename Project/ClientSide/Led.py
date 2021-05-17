@@ -33,6 +33,36 @@ class Led(object):
         if __name__  == "__main__":
             print("Off")
 
+class LedHW(object):
+    def __init__(self, GPIO, pin):
+        GPIO.setup(pin, GPIO.OUT)
+        self.pin = pin
+        self.GPIO = GPIO
+        self.toggle = False
+
+    def Toggle(self):
+        if(self.toggle == False):
+            if __name__  == "__main__":
+                print("On")
+            self.On()
+            self.toggle = True
+        else:
+            if __name__  == "__main__":
+                print("Off")
+            self.Off()
+            self.toggle = False
+
+    def On(self):
+        self.GPIO.output(self.pin, True)
+        if __name__  == "__main__":
+            print("On")
+
+    def Off(self):
+        self.GPIO.output(self.pin, False)
+        if __name__  == "__main__":
+            print("Off")
+
+
 if __name__  == "__main__":
 
     scrHeight = 500
