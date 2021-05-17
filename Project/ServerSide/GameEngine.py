@@ -7,7 +7,7 @@ from ServerPaddle import Paddle
 from ServerBall import Ball
 from ServerPlayer import Player
 
-broker_address="127.0.0.1"
+broker_address="192.168.60.206"
 scrDimen = (scrHeight, scrWidth) = (500, 500)
 paddle1 = Paddle(scrDimen, "Left")
 paddle2 = Paddle(scrDimen, "Right")

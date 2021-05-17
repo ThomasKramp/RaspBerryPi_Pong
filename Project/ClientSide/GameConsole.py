@@ -40,7 +40,7 @@ def on_message(clients, userdata, message):
         ticks.changeText("player2: ", json.loads(message.payload))
         
 
-broker_address="127.0.0.1"
+broker_address="192.168.60.206"
 client = mqtt.Client(client_id="Client",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
@@ -49,7 +49,7 @@ client.loop_start() #start the loop
 subscribes()
 
 
-scrHeight = 600
+scrHeight = 500
 scrWidth = 500
 
 coordsPlayer1 = (10,scrHeight/2-50,20,scrHeight/2+50) #De coördinaten van de speler1

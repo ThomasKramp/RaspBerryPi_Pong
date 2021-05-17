@@ -151,7 +151,7 @@ GreenLedR = LedHW(GPIO, 10)
 GreenLedL = LedHW(GPIO, 0)
 YellowLed = LedHW(GPIO, 9)
 
-broker_address="127.0.0.1"
+broker_address="192.168.60.206"
 client = mqtt.Client(client_id="Client2",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
