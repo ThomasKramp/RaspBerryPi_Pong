@@ -34,7 +34,7 @@
 
     Config variabelen
     - Aantal botsingen
-        - /tics
+        - /server/bounces
     - Aantal rondes
         - /rounds
 
@@ -111,3 +111,10 @@
     * MQTT publishes en subsrcibes maken op basis van de client side
     * Punten per bounce toegevoegd
     * 10 game limiet toegevoegd
+
+# Week 4 (17/5 23/5)
+## Robbe Elsermans
+* Debugging
+
+## Thomas Kramp
+* Debugging

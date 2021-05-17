@@ -115,7 +115,7 @@ subscribes()
 
 while stop == False:
     if start == True:
-        client.publish("/server/ticks", ball.bounces)
+        client.publish("/server/bounces", ball.bounces)
         if ball.goalAtPaddle == "":
             ball.moveBall((player1.paddle, player2.paddle))
             # print(ball.coords)
