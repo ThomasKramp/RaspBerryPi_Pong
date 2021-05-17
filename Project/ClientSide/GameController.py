@@ -66,7 +66,7 @@ def on_message(clients, userdata, message):
             subscribes()
     else:
         if("/server/start" in message.topic): #Wanneer de server de start heeft ontvangen kunnen we deze knop verwijderen
-            btnStart.destroy()
+            #btnStart.destroy()
             hasStarted = True
 
         if("/server/startnext" in message.topic):
