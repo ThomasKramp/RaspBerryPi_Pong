@@ -7,7 +7,7 @@ from ServerPaddle import Paddle
 from ServerBall import Ball
 from ServerPlayer import Player
 
-broker_address="192.168.60.206"
+broker_address="192.168.149.206"
 scrDimen = (scrHeight, scrWidth) = (500, 500)
 paddle1 = Paddle(scrDimen, "Left")
 paddle2 = Paddle(scrDimen, "Right")
@@ -120,7 +120,7 @@ while stop == False:
             ball.moveBall((player1.paddle, player2.paddle))
             # print(ball.coords)
             client.publish("/ball/coords", json.dumps(ball.coords))
-            sleep(1)
+            sleep(0.2)
         else:
             print("Left paddle at " + str(paddle1.side))
             print("Right paddle at " + str(paddle2.side))

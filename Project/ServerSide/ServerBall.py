@@ -1,3 +1,6 @@
+from threading import BoundedSemaphore
+
+
 class Ball(object):
 
     coords = (0, 0, 0, 0)
@@ -14,14 +17,31 @@ class Ball(object):
         self.coords = (scrWidth / 2 - 10, scrHeight / 2 - 10, scrWidth / 2 + 10, scrHeight / 2 + 10)
 
         # Snelheid van de bal instellen
-        self.speed = (speedX, speedY) = (31, 31)
+        self.speed = (speedX, speedY) = (7, 13)
 
     def moveBall(self, paddles):
         # Huidige positie ophalen
         (leftPos, topPos, rightPos, bottomPos) = self.coords
         (scrHeight, scrWidth) = self.scrDimen
         (speedX, speedY) = self.speed
+
+        # Versnelt de bal bij elk nieuw spel
+        if self.bounces != 0:
+
+            if (speedX < 0):
+                speedX = -self.bounces*5
+            if (speedX > 0):
+                speedX = self.bounces*5
+
+            if (speedY < 0):
+                speedY = -self.bounces*5
+            if (speedY > 0):
+                speedY = self.bounces*5
         
+        else:
+            speedX = 5
+            speedY = 5
+
         # Aanraken van een speler
         for paddle in paddles:
             if(self.isTouchingLeft(paddle)):
@@ -119,10 +139,10 @@ class Ball(object):
 
     def resetBall(self):
         # Versnelt de bal bij elk nieuw spel
-        (speedX, speedY) = self.speed
-        speedX += 5
-        speedY += 5
-        self.speed = (speedX, speedY)
+        # (speedX, speedY) = self.speed
+        # speedX += 5
+        # speedY += 5
+        # self.speed = (speedX, speedY)
         
         # Reset de plaats van de bal
         (scrHeight, scrWidth) = self.scrDimen

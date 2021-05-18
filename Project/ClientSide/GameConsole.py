@@ -40,7 +40,7 @@ def on_message(clients, userdata, message):
         ticks.changeText("ticks: ", json.loads(message.payload))
         
 
-broker_address="192.168.60.206"
+broker_address="192.168.149.206"
 client = mqtt.Client(client_id="Client",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker

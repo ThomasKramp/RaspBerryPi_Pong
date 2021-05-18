@@ -18,7 +18,7 @@ class Paddle(object):
             self.coords = (scrWidth - 20, scrHeight / 2 - 50, scrWidth - 10, scrHeight / 2 + 50)
 
         # Snelheid van paddle instellen
-        self.speed = 5
+        self.speed = scrHeight/10
 
     def movePaddle(self, movement):
         # Huidige positie ophalen
@@ -39,10 +39,10 @@ class Paddle(object):
 
     def changeSpeed(self):
         # Stel de huidige snelheid in
-        if self.speed == 5:
-            self.speed = 20
+        if self.speed == self.scrDimen[0]/10:
+            self.speed = self.scrDimen[0]/5
         else:
-            self.speed = 5
+            self.speed = self.scrDimen[0]/10
         # print(self.speed)
 
     def resetPaddle(self):        
