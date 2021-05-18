@@ -41,7 +41,7 @@ def on_message(clients, userdata, message):
         
 
 broker_address="192.168.149.206"
-client = mqtt.Client(client_id="Client",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
+client = mqtt.Client(client_id="Client2",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
 client.loop_start() #start the loop
