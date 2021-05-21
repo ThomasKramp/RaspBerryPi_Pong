@@ -85,7 +85,6 @@ def signalStart():
         # print("Off")
         sleep(1)
     sleep(1)
-    ballThread.start()
 
 def movePaddle(player, message):
     global client
@@ -99,16 +98,6 @@ def changePaddleSpeed(player):
     player.paddle.changeSpeed()
     client.publish("/" + player.name + "/server/speed", player.paddle.speed)
 
-def moveBall():
-    global stop_ball, ball, player1, player2
-    while True:
-        ball.moveBall((player1.paddle, player2.paddle))
-        client.publish("/ball/coords", json.dumps(ball.coords))
-        # print(ball.coords)
-        sleep(0.1)
-        if stop_ball:
-            break
-
 scrDimen = (scrHeight, scrWidth) = (500, 500)
 ball = Ball(scrDimen)
 stop = start = False
@@ -116,15 +105,9 @@ games = 0
 
 paddle1 = Paddle(scrDimen, "Left")
 player1 = Player(paddle1, "player1")
-threadPlayer1Up = Thread( target=movePaddle, args=(player1, "up") )
-threadPlayer1Down = Thread( target=movePaddle, args=(player1, "down") )
-threadPlayer1Speed = Thread( target=changePaddleSpeed, args=(player1,) )
 
 paddle2 = Paddle(scrDimen, "Right")
 player2 = Player(paddle2, "player2")
-threadPlayer2Up = Thread( target=movePaddle, args=(player2, "up") )
-threadPlayer2Down = Thread( target=movePaddle, args=(player2, "down") )
-threadPlayer2Speed = Thread( target=changePaddleSpeed, args=(player2,) )
 
 broker_address="192.168.149.206"
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
@@ -136,8 +119,12 @@ subscribes()
 while stop == False:
     if start == True:
         client.publish("/server/bounces", ball.bounces)
-        if ball.goalAtPaddle != "":
-            stop_ball == True
+        if ball.goalAtPaddle == "":
+            ball.moveBall((player1.paddle, player2.paddle))
+            client.publish("/ball/coords", json.dumps(ball.coords))
+            # print(ball.coords)
+            sleep(0.1)
+        else:
             print("Left paddle at " + str(paddle1.side))
             print("Right paddle at " + str(paddle2.side))
             print("Player 1 at " + str(player1.paddle.side))
