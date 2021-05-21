@@ -1,9 +1,8 @@
+import paho.mqtt.client as mqtt
 import tkinter as tk
 from Paddle import Paddle
 from Ball import Ball
 from Label import Label
-
-import paho.mqtt.client as mqtt
 
 from time import sleep
 import json
