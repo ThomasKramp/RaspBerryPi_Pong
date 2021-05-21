@@ -1,5 +1,4 @@
 import paho.mqtt.client as mqtt
-from threading import Thread
 from time import sleep
 import random
 import json
@@ -29,22 +28,22 @@ def on_message(clients, userdata, message):
     # Publish moet in json formaat
     
     if "/player1/client/up" in message.topic:
-        threadPlayer1Up.start()
+        movePaddle(player1, "up")
     
     if "/player1/client/down" in message.topic:
-        threadPlayer1Down.start()
+        movePaddle(player1, "down")
     
     if "/player1/client/fast" in message.topic:
-        threadPlayer1Speed.start()
+        changePaddleSpeed(player1)
     
     if "/player2/client/up" in message.topic:
-        threadPlayer2Up.start()
+        movePaddle(player2, "up")
     
     if "/player2/client/down" in message.topic:
-        threadPlayer2Down.start()
+        movePaddle(player2, "down")
     
     if "/player2/client/fast" in message.topic:
-        threadPlayer2Speed.start()
+        changePaddleSpeed(player2)
     
     if "/client/start" in message.topic:
         print("start")
@@ -99,23 +98,19 @@ def changePaddleSpeed(player):
     client.publish("/" + player.name + "/server/speed", player.paddle.speed)
 
 scrDimen = (scrHeight, scrWidth) = (500, 500)
-ball = Ball(scrDimen)
 stop = start = False
 games = 0
 
 paddle1 = Paddle(scrDimen, "Left")
 player1 = Player(paddle1, "player1")
-threadPlayer1Up = Thread( target=movePaddle, args=(player1, "up") )
-threadPlayer1Down = Thread( target=movePaddle, args=(player1, "down") )
-threadPlayer1Speed = Thread( target=changePaddleSpeed, args=(player1,) )
 
 paddle2 = Paddle(scrDimen, "Right")
 player2 = Player(paddle2, "player2")
-threadPlayer2Up = Thread( target=movePaddle, args=(player2, "up") )
-threadPlayer2Down = Thread( target=movePaddle, args=(player2, "down") )
-threadPlayer2Speed = Thread( target=changePaddleSpeed, args=(player2,) )
 
-broker_address="192.168.149.206"
+
+ball = Ball(scrDimen)
+
+broker_address="127.0.0.1"
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
