@@ -29,22 +29,22 @@ def on_message(clients, userdata, message):
     # Publish moet in json formaat
     
     if "/player1/client/up" in message.topic:
-        threadPlayer1Up.start()
+        movePaddle(player1, "up")
     
     if "/player1/client/down" in message.topic:
-        threadPlayer1Down.start()
+        movePaddle(player1, "down")
     
     if "/player1/client/fast" in message.topic:
-        threadPlayer1Speed.start()
+        changePaddleSpeed(player1)
     
     if "/player2/client/up" in message.topic:
-        threadPlayer2Up.start()
+        movePaddle(player2, "up")
     
     if "/player2/client/down" in message.topic:
-        threadPlayer2Down.start()
+        movePaddle(player2, "down")
     
     if "/player2/client/fast" in message.topic:
-        threadPlayer2Speed.start()
+        changePaddleSpeed(player2)
     
     if "/client/start" in message.topic:
         print("start")
@@ -85,6 +85,8 @@ def signalStart():
         # print("Off")
         sleep(1)
     sleep(1)
+    # ballThread.start()
+    # ballThread.join()
 
 def movePaddle(player, message):
     global client
@@ -98,8 +100,15 @@ def changePaddleSpeed(player):
     player.paddle.changeSpeed()
     client.publish("/" + player.name + "/server/speed", player.paddle.speed)
 
+def moveBall(ball, player1, player2):
+    global client
+    while ball.goalAtPaddle == "":
+        ball.moveBall((player1.paddle, player2.paddle))
+        client.publish("/ball/coords", json.dumps(ball.coords))
+        # print(ball.coords)
+        sleep(0.1)
+
 scrDimen = (scrHeight, scrWidth) = (500, 500)
-ball = Ball(scrDimen)
 stop = start = False
 games = 0
 
@@ -109,7 +118,10 @@ player1 = Player(paddle1, "player1")
 paddle2 = Paddle(scrDimen, "Right")
 player2 = Player(paddle2, "player2")
 
-broker_address="192.168.149.206"
+ball = Ball(scrDimen)
+ballThread = Thread(target=moveBall, args=[ball, player1, player2])
+
+broker_address="127.0.0.1"
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
