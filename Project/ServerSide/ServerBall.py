@@ -28,14 +28,14 @@ class Ball(object):
         # Versnelt de bal bij elk nieuw spel
         if self.bounces != 0:
             if (speedX < 0):
-                speedX = -self.bounces*7
+                speedX = -self.bounces * 7
             if (speedX > 0):
-                speedX = self.bounces*7
+                speedX = self.bounces * 7
 
             if (speedY < 0):
-                speedY = -self.bounces*13
+                speedY = -self.bounces * 13
             if (speedY > 0):
-                speedY = self.bounces*13
+                speedY = self.bounces * 13
 
         # Aanraken van een speler
         for paddle in paddles:
@@ -146,3 +146,4 @@ class Ball(object):
         # Reset de variabelen
         self.bounces = 0
         self.goalAtPaddle = ""
+        self.speed = (speedX, speedY) = (7, 13)
