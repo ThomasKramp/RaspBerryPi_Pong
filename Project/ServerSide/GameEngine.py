@@ -72,7 +72,7 @@ def on_message(clients, userdata, message):
                 print("Watcher Added")
 
 def signalStart():
-    global client, ballThread
+    global client
     print("start")
     client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
     client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
@@ -85,8 +85,8 @@ def signalStart():
         # print("Off")
         sleep(1)
     sleep(1)
-    # ballThread.start()
-    # ballThread.join()
+    # gameThreads[games].start()
+    # gameThreads[games].join()
 
 def movePaddle(player, message):
     global client
@@ -106,7 +106,7 @@ def moveBall(ball, player1, player2):
         ball.moveBall((player1.paddle, player2.paddle))
         client.publish("/ball/coords", json.dumps(ball.coords))
         # print(ball.coords)
-        sleep(0.1)
+        sleep(0.2)
 
 scrDimen = (scrHeight, scrWidth) = (500, 500)
 stop = start = False
@@ -119,7 +119,10 @@ paddle2 = Paddle(scrDimen, "Right")
 player2 = Player(paddle2, "player2")
 
 ball = Ball(scrDimen)
-ballThread = Thread(target=moveBall, args=[ball, player1, player2])
+gameThreads = []
+# for _ in range(11):
+#     ballThread = Thread(target=moveBall, args=[ball, player1, player2])
+#     gameThreads.append(ballThread)
 
 broker_address="192.168.1.4"
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
@@ -137,6 +140,9 @@ while stop == False:
             # print(ball.coords)
             sleep(0.1)
         else:
+            # wacht tot vorige thread volledig gedaan is
+            # while gameThreads[games].is_alive():
+            #    pass
             print("Left paddle at " + str(paddle1.side))
             print("Right paddle at " + str(paddle2.side))
             print("Player 1 at " + str(player1.paddle.side))
@@ -188,3 +194,19 @@ while stop == False:
 #        pass
 #except KeyboardInterrupt:
 #	pass
+
+
+def moveBall(ball, player1, player2):
+    global client
+    while ball.goalAtPaddle == "":
+        ball.moveBall((player1.paddle, player2.paddle))
+        client.publish("/ball/coords", json.dumps(ball.coords))
+        # print(ball.coords)
+        sleep(0.2)
+
+
+ball = Ball(scrDimen)
+gameThreads = []
+for _ in range(11):
+    ballThread = Thread(target=moveBall, args=[ball, player1, player2])
+    gameThreads.append(ballThread)
