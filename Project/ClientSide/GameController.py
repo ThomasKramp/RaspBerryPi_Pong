@@ -83,18 +83,17 @@ def on_message(clients, userdata, message):
                 #playerLeft()
                 Thread (target=playerLeft).start()
 
-def PaddleUp():
+def PaddleUp(client):
     #Stuur True naar MQTT
-    global client
 
     if(playerSelector == 1):
         client.publish("/player1/client/up","True")
     elif(playerSelector == 2):
         client.publish("/player2/client/up","True")
 
-def PaddleSpeed():
+def PaddleSpeed(client):
     #Stuur True naar MQTT
-    global client, speed    
+    global speed    
     if speed:
         speed = False
     else:
@@ -105,33 +104,37 @@ def PaddleSpeed():
     elif(playerSelector == 2):
         client.publish("/player2/client/fast",speed)
 
-def PaddleDown():
+def PaddleDown(client):
     #Stuur True naar MQTT
-    global client
 
     if(playerSelector == 1):
         client.publish("/player1/client/down","True")
     elif(playerSelector == 2):
         client.publish("/player2/client/down","True")
 
-def Start():
+def Start(client):
+    global hasStarted
     #print("Start")
     client.publish("/client/start","True")
+    hasStarted = True
 
 def isr(channel):
-    global hasStarted
+    global client
     if(channel == 27):
         #print("BTN Up")
-        PaddleUp()
+        #PaddleUp()
+        Thread (target=PaddleUp, args=(client)).start()
     if(channel == 22):
         #print("BTN Down")
-        PaddleDown()
+        #PaddleDown()
+        Thread (target=PaddleDown, args=(client)).start()
     if(channel == 5 and hasStarted == True):
         #print("BTN Speed")
-        PaddleSpeed()
+        #PaddleSpeed()
+        Thread (target=PaddleSpeed, args=(client)).start()
     elif (channel == 5 and hasStarted == False):
-        Start()
-        hasStarted = True
+        #Start()
+        Thread (target=Start, args=(client)).start()
 
 hasStarted = False
 #Aanmaken knopjes
