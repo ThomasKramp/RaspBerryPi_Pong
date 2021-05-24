@@ -4,6 +4,7 @@ from Ball import Ball
 from Led import Led, LedColors
 from Button import Button
 from Label import Label
+from threading import Thread
 
 import paho.mqtt.client as mqtt
 
@@ -96,10 +97,12 @@ def on_message(clients, userdata, message):
             print(message.payload)
             x = message.payload.decode("utf-8") 
             if(x == "False" and playerSelector == 1 or x == "True" and playerSelector == 2):
-                playerRight()
+                #playerRight()
+                 Thread (target=playerRight).start()
 
             if(x == "False" and playerSelector == 2 or x == "True" and playerSelector == 1):
-                playerLeft()
+                #playerLeft()
+                Thread (target=playerLeft).start()
 
 def PaddleUp():
     #Stuur True naar MQTT
@@ -142,7 +145,7 @@ def Start():
     print("Start")
     client.publish("/client/start","True")
 
-broker_address="127.0.0.1"
+broker_address="192.168.1.4"
 client = mqtt.Client(client_id="Client2",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
