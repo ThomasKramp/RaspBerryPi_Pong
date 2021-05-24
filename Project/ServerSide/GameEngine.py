@@ -100,6 +100,15 @@ def changePaddleSpeed(player):
     player.paddle.changeSpeed()
     client.publish("/" + player.name + "/server/speed", player.paddle.speed)
 
+def addScore(ball, winner, loser):
+    if loser.paddle.side == ball.goalAtPaddle:
+        if(ball.bounces == 0):
+            winner.points = winner.points + (5)
+        else:
+            winner.points = winner.points + (ball.bounces * 5)
+        client.publish("/" + winner.name + "/points", winner.points)
+        print(winner.name + "scores")
+
 def moveBall(ball, player1, player2):
     global client
     while ball.goalAtPaddle == "":
@@ -120,11 +129,11 @@ player2 = Player(paddle2, "player2")
 
 ball = Ball(scrDimen)
 gameThreads = []
-# for _ in range(11):
-#     ballThread = Thread(target=moveBall, args=[ball, player1, player2])
-#     gameThreads.append(ballThread)
+for _ in range(11):
+    ballThread = Thread(target=moveBall, args=[ball, player1, player2])
+    gameThreads.append(ballThread)
 
-broker_address="192.168.1.4"
+broker_address="127.0.0.1"
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
@@ -141,32 +150,22 @@ while stop == False:
             sleep(0.1)
         else:
             # wacht tot vorige thread volledig gedaan is
-            # while gameThreads[games].is_alive():
-            #    pass
+            while gameThreads[games].is_alive():
+               pass
+
+            # Huidige posities
             print("Left paddle at " + str(paddle1.side))
             print("Right paddle at " + str(paddle2.side))
             print("Player 1 at " + str(player1.paddle.side))
             print("Player 2 at " + str(player2.paddle.side))
 
             # Geeft de juiste speler de punten
-            if player1.paddle.side == ball.goalAtPaddle:
-                if(ball.bounces == 0):
-                    player2.points += 1 * 5
-                else:
-                    player2.points = player2.points + (ball.bounces * 5)
-                client.publish("/player2/points", player2.points)
-                print("Player 2 scores")
-            if player2.paddle.side == ball.goalAtPaddle:
-                if(ball.bounces == 0):
-                    player1.points = player1.points + (5)
-                else:
-                    player1.points = player1.points + (ball.bounces * 5)
-                client.publish("/player1/points", player1.points)
-                print("Player 1 scores")
+            addScore(ball, player1, player2)
+            addScore(ball, player2, player1)
             
             willy = random.randint(1, 2)
             print("Willy is " + str(willy))
-            if willy == 1:
+            if willy == 1 or games == 0:
                 player1.paddle = paddle1
                 player2.paddle = paddle2
                 client.publish("/server/selectplayer", True)
@@ -194,19 +193,3 @@ while stop == False:
 #        pass
 #except KeyboardInterrupt:
 #	pass
-
-
-def moveBall(ball, player1, player2):
-    global client
-    while ball.goalAtPaddle == "":
-        ball.moveBall((player1.paddle, player2.paddle))
-        client.publish("/ball/coords", json.dumps(ball.coords))
-        # print(ball.coords)
-        sleep(0.2)
-
-
-ball = Ball(scrDimen)
-gameThreads = []
-for _ in range(11):
-    ballThread = Thread(target=moveBall, args=[ball, player1, player2])
-    gameThreads.append(ballThread)
