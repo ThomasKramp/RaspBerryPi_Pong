@@ -121,3 +121,10 @@
 
 ## Thomas Kramp
 * Debugging
+
+# Week 5 (24/5 30/5)
+## Robbe Elsermans
+* Threading toegevoegd aan GameController
+
+## Thomas Kramp
+* Debugging
