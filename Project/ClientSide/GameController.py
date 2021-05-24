@@ -5,10 +5,9 @@ from time import sleep
 from Led import LedHW
 from Button import ButtonHW
 import json
-
+from threading import Thread
 
 GPIO.setmode(GPIO.BCM)
-
 
 def subscribes():
     global client
@@ -77,10 +76,12 @@ def on_message(clients, userdata, message):
             print(message.payload)
             x = message.payload.decode("utf-8") 
             if(x == "False" and playerSelector == 1 or x == "True" and playerSelector == 2):
-                playerRight()
+                #playerRight()
+                Thread (target=playerRight).start()
 
             if(x == "False" and playerSelector == 2 or x == "True" and playerSelector == 1):
-                playerLeft()
+                #playerLeft()
+                Thread (target=playerLeft).start()
 
 def PaddleUp():
     #Stuur True naar MQTT
@@ -144,7 +145,7 @@ GreenLedR = LedHW(GPIO, 10)
 GreenLedL = LedHW(GPIO, 0)
 YellowLed = LedHW(GPIO, 9)
 
-broker_address="192.168.149.206"
+broker_address="192.168.1.4"
 client = mqtt.Client(client_id="Client2",clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker
