@@ -1,6 +1,3 @@
-from threading import BoundedSemaphore
-
-
 class Ball(object):
 
     coords = (0, 0, 0, 0)
@@ -26,16 +23,17 @@ class Ball(object):
         (speedX, speedY) = self.speed
 
         # Versnelt de bal bij elk nieuw spel
+        willy = random.randint(0, 11)
         if self.bounces != 0:
             if (speedX < 0):
-                speedX = -self.bounces * 7
+                speedX = -self.bounces * 7 + willy
             if (speedX > 0):
-                speedX = self.bounces * 7
+                speedX = self.bounces * 7 + willy
 
             if (speedY < 0):
-                speedY = -self.bounces * 13
+                speedY = -self.bounces * 13 + willy
             if (speedY > 0):
-                speedY = self.bounces * 13
+                speedY = self.bounces * 13 + willy
 
         # Aanraken van een speler
         for paddle in paddles:
