@@ -155,7 +155,7 @@ subscribes()
 
 
 scrHeight = 600
-scrWidth = 500
+scrWidth = 750
 
 #Initial startup fase wanneer we geen verbinding hebben met de Game Engine
 speed = False

@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from threading import Thread, enumerate
+from threading import Thread
 from time import sleep
 import random
 import json
@@ -23,45 +23,34 @@ def subscribes():
     client.subscribe("/client/player")
 
 def on_message(clients, userdata, message):
-    global paddle1, paddle2, start
+    global player1, player2, ball, start
     # print(message.payload)
     # print(json.loads(message.payload))
     # Publish moet in json formaat
-
-    # threads = enumerate()
-    # if len(threads) >= 5:
-    #     while threads[5].is_alive():
-    #         pass
     
-    if "/player1/client/up" in message.topic:
-        # Thread(target=movePaddle, args=[player1, "up"]).start()
+    if "/player1/client/up" in message.topic:        
         movePaddle(player1, "up")
     
     if "/player1/client/down" in message.topic:
-        # Thread(target=movePaddle, args=[player1, "down"]).start()
         movePaddle(player1, "down")
     
     if "/player1/client/fast" in message.topic:
-        # Thread(target=changePaddleSpeed, args=[player1]).start()
         changePaddleSpeed(player1)
     
     if "/player2/client/up" in message.topic:
-        # Thread(target=movePaddle, args=[player2, "up"]).start()
         movePaddle(player2, "up")
     
     if "/player2/client/down" in message.topic:
-        # Thread(target=movePaddle, args=[player2, "down"]).start()
         movePaddle(player2, "down")
     
     if "/player2/client/fast" in message.topic:
-        # Thread(target=changePaddleSpeed, args=[player2]).start()
         changePaddleSpeed(player2)
     
     if "/client/start" in message.topic:
         print("start")
         client.publish("/server/start", "Start")
-        client.publish("/player1/server/coords", json.dumps(paddle1.coords))
-        client.publish("/player2/server/coords", json.dumps(paddle2.coords))
+        client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
+        client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
         client.publish("/ball/coords", json.dumps(ball.coords))
         start = True
         ball.goalAtPaddle = "Setup"
@@ -81,23 +70,6 @@ def on_message(clients, userdata, message):
             else:
                 client.publish("/server/player", 3)
                 print("Watcher Added")
-
-def signalStart():
-    global client
-    print("start")
-    client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
-    client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
-    client.publish("/ball/coords", json.dumps(ball.coords))
-    for x in range(3):
-        client.publish("/server/startnext", "On")
-        # print("On")
-        sleep(1)
-        client.publish("/server/startnext", "Off")
-        # print("Off")
-        sleep(1)
-    sleep(1)
-    # gameThreads[games].start()
-    # gameThreads[games].join()
 
 def movePaddle(player, message):
     global client
@@ -120,7 +92,6 @@ def addScore(ball, winner, loser):
         client.publish("/" + winner.name + "/points", winner.points)
         print(winner.name + "scores")
 
-def moveBall(ball, player1, player2):
     global client
     while ball.goalAtPaddle == "":
         ball.moveBall((player1.paddle, player2.paddle))
@@ -128,7 +99,22 @@ def moveBall(ball, player1, player2):
         # print(ball.coords)
         sleep(0.2)
 
-scrDimen = (scrHeight, scrWidth) = (500, 500)
+def signalStart(player1, player2, ball):
+    global client
+    print("start")
+    client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
+    client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
+    client.publish("/ball/coords", json.dumps(ball.coords))
+    for x in range(3):
+        client.publish("/server/startnext", "On")
+        # print("On")
+        sleep(1)
+        client.publish("/server/startnext", "Off")
+        # print("Off")
+        sleep(1)
+    sleep(1)
+
+scrDimen = (scrHeight, scrWidth) = (500, 750)
 stop = start = False
 games = 0
 
@@ -139,10 +125,6 @@ paddle2 = Paddle(scrDimen, "Right")
 player2 = Player(paddle2, "player2")
 
 ball = Ball(scrDimen)
-# gameThreads = []
-# for _ in range(11):
-#     ballThread = Thread(target=moveBall, args=[ball, player1, player2])
-#     gameThreads.append(ballThread)
 
 broker_address="127.0.0.1"
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
@@ -160,9 +142,6 @@ while stop == False:
             # print(ball.coords)
             sleep(0.1)
         else:
-            # wacht tot vorige thread volledig gedaan is
-            # while gameThreads[games].is_alive():
-            #    pass
             # Huidige posities
             print("Left paddle at " + str(paddle1.side))
             print("Right paddle at " + str(paddle2.side))
@@ -187,10 +166,11 @@ while stop == False:
             ball.resetBall()
             player1.paddle.resetPaddle()
             player2.paddle.resetPaddle()
+
             # Kijkt na hoeveel games er geweest zijn
             games += 1
             if games <= 10:
-                signalStart()
+                signalStart(player1, player2, ball)
                 print("Player 1 selected")
                 print("Start Game " + str(games))
             else:
