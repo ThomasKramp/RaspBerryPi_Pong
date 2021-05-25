@@ -92,7 +92,7 @@ def MQTT():
     subscribes()
 
 def Game():
-    global start, player1, player2, ball, client
+    global start, stop, player1, player2, ball, client
     def addScore(ball, winner, loser):
         if loser.paddle.side == ball.goalAtPaddle:
             if(ball.bounces == 0):
@@ -117,7 +117,7 @@ def Game():
             sleep(1)
         sleep(1)
 
-    stop = False
+     = False
     games = 0
     leftPaddle = player1.paddle
     rightPaddle = player2.paddle
@@ -170,7 +170,7 @@ def Game():
                     stop = True
 
 scrDimen = (scrHeight, scrWidth) = (500, 750)
-start = False
+stop = start = False
 
 player1 = Player(Paddle(scrDimen, "Left"), "player1")
 player2 = Player(Paddle(scrDimen, "Right"), "player2")
