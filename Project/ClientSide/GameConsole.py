@@ -49,7 +49,7 @@ subscribes()
 
 
 scrHeight = 500
-scrWidth = 500
+scrWidth = 750
 
 coordsPlayer1 = (10,scrHeight/2-50,20,scrHeight/2+50) #De coördinaten van de speler1
 coordsPlayer2 = (scrWidth-20,scrHeight/2-50,scrWidth-10,scrHeight/2+50) #De coördinaten van de speler2
