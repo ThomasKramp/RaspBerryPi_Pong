@@ -50,7 +50,7 @@ def Start():
 random.seed()
 clientId = str(random.random()*10000)
 print(clientId)
-broker_address="127.0.0.1"
+broker_address="192.168.1.4"
 client = mqtt.Client(client_id=clientId,clean_session=True, userdata="initial", protocol=mqtt.MQTTv31) #create new instance
 client.on_message=on_message #attach function to callback
 client.connect(host=broker_address,port=1883) #connect to broker

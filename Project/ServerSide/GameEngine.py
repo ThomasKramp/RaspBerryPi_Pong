@@ -85,7 +85,7 @@ def MQTT():
         player.paddle.changeSpeed()
         client.publish("/" + player.name + "/server/speed", player.paddle.speed)
     
-    broker_address="127.0.0.1"
+    broker_address="192.168.1.4"
     client.on_message=on_message #attach function to callback
     client.connect(host=broker_address,port=1883) #connect to broker
     client.loop_start() #start the loop
