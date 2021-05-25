@@ -105,6 +105,7 @@ def Game():
     def signalStart(player1, player2, ball):
         global client
         print("start")
+        client.publish("/server/start", "Start")
         client.publish("/player1/server/coords", json.dumps(player1.paddle.coords))
         client.publish("/player2/server/coords", json.dumps(player2.paddle.coords))
         client.publish("/ball/coords", json.dumps(ball.coords))
