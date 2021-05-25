@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from threading import Thread
+from threading import Thread, enumerate
 from time import sleep
 import random
 import json
@@ -27,23 +27,34 @@ def on_message(clients, userdata, message):
     # print(message.payload)
     # print(json.loads(message.payload))
     # Publish moet in json formaat
+
+    # threads = enumerate()
+    # if len(threads) >= 5:
+    #     while threads[5].is_alive():
+    #         pass
     
     if "/player1/client/up" in message.topic:
+        # Thread(target=movePaddle, args=[player1, "up"]).start()
         movePaddle(player1, "up")
     
     if "/player1/client/down" in message.topic:
+        # Thread(target=movePaddle, args=[player1, "down"]).start()
         movePaddle(player1, "down")
     
     if "/player1/client/fast" in message.topic:
+        # Thread(target=changePaddleSpeed, args=[player1]).start()
         changePaddleSpeed(player1)
     
     if "/player2/client/up" in message.topic:
+        # Thread(target=movePaddle, args=[player2, "up"]).start()
         movePaddle(player2, "up")
     
     if "/player2/client/down" in message.topic:
+        # Thread(target=movePaddle, args=[player2, "down"]).start()
         movePaddle(player2, "down")
     
     if "/player2/client/fast" in message.topic:
+        # Thread(target=changePaddleSpeed, args=[player2]).start()
         changePaddleSpeed(player2)
     
     if "/client/start" in message.topic:
@@ -152,13 +163,11 @@ while stop == False:
             # wacht tot vorige thread volledig gedaan is
             # while gameThreads[games].is_alive():
             #    pass
-
             # Huidige posities
             print("Left paddle at " + str(paddle1.side))
             print("Right paddle at " + str(paddle2.side))
             print("Player 1 at " + str(player1.paddle.side))
             print("Player 2 at " + str(player2.paddle.side))
-
             # Geeft de juiste speler de punten
             addScore(ball, player1, player2)
             addScore(ball, player2, player1)
@@ -178,7 +187,6 @@ while stop == False:
             ball.resetBall()
             player1.paddle.resetPaddle()
             player2.paddle.resetPaddle()
-
             # Kijkt na hoeveel games er geweest zijn
             games += 1
             if games <= 10:
