@@ -117,7 +117,6 @@ def Game():
             sleep(1)
         sleep(1)
 
-     = False
     games = 0
     leftPaddle = player1.paddle
     rightPaddle = player2.paddle
