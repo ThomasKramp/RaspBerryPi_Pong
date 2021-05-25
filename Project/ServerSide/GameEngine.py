@@ -128,10 +128,10 @@ paddle2 = Paddle(scrDimen, "Right")
 player2 = Player(paddle2, "player2")
 
 ball = Ball(scrDimen)
-gameThreads = []
-for _ in range(11):
-    ballThread = Thread(target=moveBall, args=[ball, player1, player2])
-    gameThreads.append(ballThread)
+# gameThreads = []
+# for _ in range(11):
+#     ballThread = Thread(target=moveBall, args=[ball, player1, player2])
+#     gameThreads.append(ballThread)
 
 broker_address="127.0.0.1"
 client = mqtt.Client(client_id="server",clean_session=True, userdata="", protocol=mqtt.MQTTv31) #create new instance
@@ -150,8 +150,8 @@ while stop == False:
             sleep(0.1)
         else:
             # wacht tot vorige thread volledig gedaan is
-            while gameThreads[games].is_alive():
-               pass
+            # while gameThreads[games].is_alive():
+            #    pass
 
             # Huidige posities
             print("Left paddle at " + str(paddle1.side))
@@ -186,6 +186,12 @@ while stop == False:
                 print("Player 1 selected")
                 print("Start Game " + str(games))
             else:
+                if player1.points > player2.points:
+                    print("player 1 wins")
+                elif player1.points < player2.points:
+                    print("player 2 wins")
+                else:
+                    print("draw")
                 stop = True
 
 #try:

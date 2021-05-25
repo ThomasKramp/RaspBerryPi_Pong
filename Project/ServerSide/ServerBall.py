@@ -23,17 +23,16 @@ class Ball(object):
         (speedX, speedY) = self.speed
 
         # Versnelt de bal bij elk nieuw spel
-        willy = random.randint(0, 11)
         if self.bounces != 0:
             if (speedX < 0):
-                speedX = -self.bounces * 7 + willy
+                speedX = -self.bounces * 7 + self.bounces % 7
             if (speedX > 0):
-                speedX = self.bounces * 7 + willy
+                speedX = self.bounces * 7 - self.bounces % 7
 
             if (speedY < 0):
-                speedY = -self.bounces * 13 + willy
+                speedY = -self.bounces * 13 + self.bounces % 13
             if (speedY > 0):
-                speedY = self.bounces * 13 + willy
+                speedY = self.bounces * 13 - self.bounces % 13
 
         # Aanraken van een speler
         for paddle in paddles:
