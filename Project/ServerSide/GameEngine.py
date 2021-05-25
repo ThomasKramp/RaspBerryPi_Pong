@@ -65,7 +65,7 @@ def MQTT():
                 print("Player 1 selected")
             else:
                 if player2.isSet == False:
-                    paddle2.isSet = True
+                    player2.isSet = True
                     client.publish("/server/player", 2)
                     client.publish("/server/selectplayer", True)
                     print("Player 2 selected")
@@ -183,3 +183,6 @@ gameJob = Thread(target=Game)
 
 mqttJob.start()
 gameJob.start()
+
+mqttJob.join()
+gameJob.join()

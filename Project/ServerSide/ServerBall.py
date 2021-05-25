@@ -143,4 +143,13 @@ class Ball(object):
         # Reset de variabelen
         self.bounces = 0
         self.goalAtPaddle = ""
-        self.speed = (speedX, speedY) = (7, 13)
+        (speedX, speedY) = self.speed
+        if speedX > 0:
+            speedX = 7
+        else:
+            speedX = -7
+        if speedY > 0:
+            speedY = 13
+        else:
+            speedY = -13
+        self.speed = (speedX, speedY)
