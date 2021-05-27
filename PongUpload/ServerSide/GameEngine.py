@@ -183,6 +183,3 @@ gameJob = Thread(target=Game)
 
 mqttJob.start()
 gameJob.start()
-
-mqttJob.join()
-gameJob.join()
