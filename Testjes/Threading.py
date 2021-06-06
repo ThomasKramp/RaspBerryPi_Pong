@@ -18,5 +18,3 @@ opdr2 = Thread (target=func, args=("func2", 0.5, 12))
 
 opdr1.start()
 opdr2.start()
-
-
